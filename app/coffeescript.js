@@ -98,3 +98,62 @@ There are no whitespaces in the pattern
 }).call(this);
 
 //# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvZmZlZS83LzAzLnBhdHRlcm4uY29mZmVlIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQTs7Ozs7Ozs7Ozs7O0FBQUE7QUFBQSxNQUFBOztFQWFBLE9BQUEsR0FBVSxTQUFDLENBQUQ7QUFDUixRQUFBO0lBQUEsTUFBQSxHQUFTO0lBQ1QsQ0FBQSxHQUFJO0FBRUosV0FBTSxDQUFBLEdBQUksQ0FBVjtNQUNFLENBQUE7TUFDQSxDQUFBLEdBQUk7QUFDSixhQUFNLENBQUEsR0FBSSxDQUFWO1FBQ0UsQ0FBQTtRQUNBLE1BQUEsSUFBVztNQUZiO01BR0EsTUFBQSxJQUFVO0lBTlo7QUFRQSxXQUFPLE1BQU0sQ0FBQyxLQUFQLENBQWEsQ0FBYixFQUFlLENBQUMsQ0FBaEI7RUFaQztBQWJWIiwiZmlsZSI6ImNvZmZlZS83LzAzLnBhdHRlcm4uanMiLCJzb3VyY2VSb290IjoiL3NvdXJjZS8iLCJzb3VyY2VzQ29udGVudCI6WyIjIyNcblxuWW91IGhhdmUgdG8gd3JpdGUgYSBmdW5jdGlvbiBwYXR0ZXJuIHdoaWNoIHJldHVybnNcbnRoZSBmb2xsb3dpbmcgUGF0dGVybihTZWUgUGF0dGVybiAmIEV4YW1wbGVzKSB1cHRvIG4gbnVtYmVyIG9mIHJvd3MuXG5cbk5vdGU6UmV0dXJuaW5nIHRoZSBwYXR0ZXJuIGlzIG5vdCB0aGUgc2FtZSBhcyBQcmludGluZyB0aGUgcGF0dGVybi5cblJ1bGVzL05vdGU6XG5cbklmIG4gPCAxIHRoZW4gaXQgc2hvdWxkIHJldHVybiBcIlwiIGkuZS4gZW1wdHkgc3RyaW5nLlxuVGhlcmUgYXJlIG5vIHdoaXRlc3BhY2VzIGluIHRoZSBwYXR0ZXJuXG5cbiMjI1xuXG5wYXR0ZXJuID0gKG4pIC0+XG4gIHJlc3VsdCA9IFwiXCJcbiAgeCA9IDBcblxuICB3aGlsZSB4IDwgblxuICAgIHgrK1xuICAgIHkgPSAwXG4gICAgd2hpbGUgeSA8IHhcbiAgICAgIHkrK1xuICAgICAgcmVzdWx0ICs9ICh4KVxuICAgIHJlc3VsdCArPSBcIlxcblwiXG5cbiAgcmV0dXJuIHJlc3VsdC5zbGljZSgwLC0xKSAjcmVtb3ZlIGxhc3QgXFxuXG5cbiMgY29uc29sZS5sb2cgcGF0dGVybiAwXG4jIGNvbnNvbGUubG9nIHBhdHRlcm4gMVxuIyBjb25zb2xlLmxvZyBwYXR0ZXJuIDNcblxuXG4iXX0=
+
+(function() {
+  var sumDigits;
+
+  sumDigits = function(num) {
+    var i, j, len, ref, sum;
+    sum = 0;
+    ref = "" + (Math.abs(num));
+    for (j = 0, len = ref.length; j < len; j++) {
+      i = ref[j];
+      sum += parseInt(i);
+    }
+    return sum;
+  };
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvZmZlZS83LzA0LnN1bV9kaWdpdHMuY29mZmVlIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0FBQUEsTUFBQTs7RUFBQSxTQUFBLEdBQVksU0FBQyxHQUFEO0FBQ1YsUUFBQTtJQUFBLEdBQUEsR0FBTTtBQUNOO0FBQUEsU0FBQSxxQ0FBQTs7TUFBQSxHQUFBLElBQU8sUUFBQSxDQUFTLENBQVQ7QUFBUDtXQUNBO0VBSFU7QUFBWiIsImZpbGUiOiJjb2ZmZWUvNy8wNC5zdW1fZGlnaXRzLmpzIiwic291cmNlUm9vdCI6Ii9zb3VyY2UvIiwic291cmNlc0NvbnRlbnQiOlsic3VtRGlnaXRzID0gKG51bSkgLT5cbiAgc3VtID0gMFxuICBzdW0gKz0gcGFyc2VJbnQgaSBmb3IgaSBpbiBcIiN7TWF0aC5hYnMobnVtKX1cIlxuICBzdW0gIyBhZGQgZXhwbGljaXQgcmV0dXJuIHRvIHByZXZlbnQgcHVzaCB0byAncmVzdWx0cycgdmFyaWFibGVcblxuIyBjb25zb2xlLmxvZyBzdW1EaWdpdHMgMTIzXG4jIGNvbnNvbGUubG9nIHN1bURpZ2l0cyAtMTIzXG4jIGNvbnNvbGUubG9nIHN1bURpZ2l0cyAwXG4jIGNvbnNvbGUubG9nIHN1bURpZ2l0cyA1NVxuICAiXX0=
+
+
+/*
+| HEAD | <----------- TAIL ------------> |
+[  1,  2,  3,  4,  5,  6,  7,  8,  9,  10]
+| <----------- INIT ------------> | LAST |
+
+Implement following functions:
+
+head [x] = x
+tail [x] = []
+init [x] = []
+last [x] = x
+ */
+
+(function() {
+  var head, init, last, lastBetter, tail;
+
+  head = function(arr) {
+    return arr[0];
+  };
+
+  tail = function(arr) {
+    return arr.slice(1);
+  };
+
+  init = function(arr) {
+    return arr.slice(0, -1);
+  };
+
+  last = function(arr) {
+    return head(arr.slice(-1));
+  };
+
+  lastBetter = function() {
+    return arr[arr.length - 1];
+  };
+
+}).call(this);
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImNvZmZlZS83LzA1LmhlYWRfdGFpbF9pbml0X2xhc3QuY29mZmVlIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQTs7Ozs7Ozs7Ozs7OztBQUFBO0FBQUEsTUFBQTs7RUFjQSxJQUFBLEdBQU8sU0FBQyxHQUFEO1dBQVMsR0FBSSxDQUFBLENBQUE7RUFBYjs7RUFDUCxJQUFBLEdBQU8sU0FBQyxHQUFEO1dBQVMsR0FBSTtFQUFiOztFQUNQLElBQUEsR0FBTyxTQUFDLEdBQUQ7V0FBUyxHQUFJO0VBQWI7O0VBQ1AsSUFBQSxHQUFPLFNBQUMsR0FBRDtXQUFTLElBQUEsQ0FBSyxHQUFJLFVBQVQ7RUFBVDs7RUFDUCxVQUFBLEdBQWEsU0FBQTtXQUFNLEdBQUksQ0FBQSxHQUFHLENBQUMsTUFBSixHQUFhLENBQWI7RUFBVjtBQWxCYiIsImZpbGUiOiJjb2ZmZWUvNy8wNS5oZWFkX3RhaWxfaW5pdF9sYXN0LmpzIiwic291cmNlUm9vdCI6Ii9zb3VyY2UvIiwic291cmNlc0NvbnRlbnQiOlsiIyMjXG58IEhFQUQgfCA8LS0tLS0tLS0tLS0gVEFJTCAtLS0tLS0tLS0tLS0+IHxcblsgIDEsICAyLCAgMywgIDQsICA1LCAgNiwgIDcsICA4LCAgOSwgIDEwXVxufCA8LS0tLS0tLS0tLS0gSU5JVCAtLS0tLS0tLS0tLS0+IHwgTEFTVCB8XG5cbkltcGxlbWVudCBmb2xsb3dpbmcgZnVuY3Rpb25zOlxuXG5oZWFkIFt4XSA9IHhcbnRhaWwgW3hdID0gW11cbmluaXQgW3hdID0gW11cbmxhc3QgW3hdID0geFxuXG4jIyNcblxuaGVhZCA9IChhcnIpIC0+IGFyclswXVxudGFpbCA9IChhcnIpIC0+IGFyclsxLi5dXG5pbml0ID0gKGFycikgLT4gYXJyWy4uLi0xXVxubGFzdCA9IChhcnIpIC0+IGhlYWQgYXJyWy0xLi4uXVxubGFzdEJldHRlciA9ICgpIC0+IGFyclthcnIubGVuZ3RoIC0gMV1cblxuIyBhID0gWzEsMiwyLDIsMiwyLDNdXG5cbiMgY29uc29sZS5sb2cgaGVhZCBhXG4jIGNvbnNvbGUubG9nIHRhaWwgYVxuIyBjb25zb2xlLmxvZyBpbml0IGFcbiMgY29uc29sZS5sb2cgbGFzdCBhXG4jIGNvbnNvbGUubG9nIGxhc3RCZXR0ZXIgYVxuIl19
