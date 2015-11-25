@@ -9,7 +9,9 @@ config = require './config.json'
 gulp.task 'coffee', ->
   gulp.src './src/**/*.coffee'
     .pipe($.plumber())
-    .pipe($.coffeelint())
+    .pipe($.coffeelint(
+      indentation: 'ignore'
+    ))
     .pipe($.coffeelint.reporter(coffeeLintStylish))
     .pipe($.sourcemaps.init())
     .pipe($.coffee())
