@@ -14,9 +14,9 @@ gulp.task 'coffee', ->
         level: "ignore"
     ))
     .pipe($.coffeelint.reporter(coffeeLintStylish))
-    .pipe($.sourcemaps.init())
+    # .pipe($.sourcemaps.init())
     .pipe($.coffee())
-    .pipe($.sourcemaps.write())
+    # .pipe($.sourcemaps.write())
     .pipe($.concat('coffeescript.js'))
     .pipe(gulp.dest('./app'))
     .pipe($.livereload())
