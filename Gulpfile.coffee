@@ -10,7 +10,8 @@ gulp.task 'coffee', ->
   gulp.src './src/**/*.coffee'
     .pipe($.plumber())
     .pipe($.coffeelint(
-      indentation: 'ignore'
+      indentation: 
+        level: "ignore"
     ))
     .pipe($.coffeelint.reporter(coffeeLintStylish))
     .pipe($.sourcemaps.init())
