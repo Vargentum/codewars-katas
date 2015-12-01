@@ -75,6 +75,56 @@ deleteNth([1, 2, 3, 1, 2, 3, 1], 3); // [1,1,1,2] 1,1,2
 
 "use strict";
 
+/*
+  Write function that sums ranges of ranges between its numbers
+
+  summaryRanges([1,2,3,4]) === ['1->4']
+  summaryRanges([0, 1, 2, 5, 6, 9]) === ["0->2", "5->6", "9"]
+  summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7, 20, 25]) === ["0->7", "20", "25"]
+  summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]) === ["0->7","9->10"]
+*/
+
+/*
+algorhytm:
+
+  - rm duplications
+  - map -> if range > 1 => push separatly
+  - if no -> splice and insert new 0->1 ...0->2...
+*/
+
+function summaryRanges(arr) {
+
+  var result = [];
+
+  var removeDuplicated = function removeDuplicated(item, i) {
+    return item !== item[i + 1];
+  };
+
+  var writeRanges = function writeRanges(item, i, a) {
+    if (item[i + 1] - item !== 1) {
+      result.push("" + item);
+    } else {
+      var pattern = item + "->" + item[i + 1];
+
+      if (result[i].lengh !== 1) {
+        result.splice(i, 1, pattern);
+      } else {
+        result.push(pattern);
+      };
+    }
+  };
+
+  arr.filter(removeDuplicated).forEach(writeRanges);
+
+  return result;
+}
+
+console.log(summaryRanges([1, 2, 2, 3, 3, 4]));
+console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIjAzLnN1bV9hcnJfcmFuZ2VzLmpzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFpQkEsU0FBUyxhQUFhLENBQUUsR0FBRyxFQUFFOztBQUUzQixNQUFJLE1BQU0sR0FBRyxFQUFFLENBQUE7O0FBRWYsTUFBSSxnQkFBZ0IsR0FBRyxTQUFuQixnQkFBZ0IsQ0FBSSxJQUFJLEVBQUUsQ0FBQztXQUFLLElBQUksS0FBSyxJQUFJLENBQUMsQ0FBQyxHQUFHLENBQUMsQ0FBQztHQUFBLENBQUE7O0FBRXhELE1BQUksV0FBVyxHQUFHLFNBQWQsV0FBVyxDQUFJLElBQUksRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFLO0FBQ2hDLFFBQUksSUFBSSxDQUFDLENBQUMsR0FBQyxDQUFDLENBQUMsR0FBRyxJQUFJLEtBQUssQ0FBQyxFQUFFO0FBQzFCLFlBQU0sQ0FBQyxJQUFJLE1BQUksSUFBSSxDQUFHLENBQUE7S0FDdkIsTUFBTTtBQUNMLFVBQUksT0FBTyxHQUFNLElBQUksVUFBSyxJQUFJLENBQUMsQ0FBQyxHQUFDLENBQUMsQ0FBQyxBQUFFLENBQUE7O0FBRXJDLFVBQUksTUFBTSxDQUFDLENBQUMsQ0FBQyxDQUFDLEtBQUssS0FBSyxDQUFDLEVBQUU7QUFDekIsY0FBTSxDQUFDLE1BQU0sQ0FBQyxDQUFDLEVBQUUsQ0FBQyxFQUFFLE9BQU8sQ0FBQyxDQUFBO09BQzdCLE1BQUs7QUFDSixjQUFNLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxDQUFBO09BQ3JCLENBQUM7S0FFSDtHQUNGLENBQUE7O0FBRUQsS0FBRyxDQUFDLE1BQU0sQ0FBQyxnQkFBZ0IsQ0FBQyxDQUN4QixPQUFPLENBQUMsV0FBVyxDQUFDLENBQUE7O0FBRXhCLFNBQU8sTUFBTSxDQUFDO0NBQ2Y7O0FBRUQsT0FBTyxDQUFDLEdBQUcsQ0FBQyxhQUFhLENBQUMsQ0FBQyxDQUFDLEVBQUMsQ0FBQyxFQUFDLENBQUMsRUFBQyxDQUFDLEVBQUMsQ0FBQyxFQUFDLENBQUMsQ0FBQyxDQUFDLENBQUMsQ0FBQztBQUMxQyxPQUFPLENBQUMsR0FBRyxDQUFDLGFBQWEsQ0FBQyxDQUFDLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxDQUFDLENBQUMsQ0FBQyxDQUFDIiwiZmlsZSI6ImpzLzYvMDMuc3VtX2Fycl9yYW5nZXMuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICBXcml0ZSBmdW5jdGlvbiB0aGF0IHN1bXMgcmFuZ2VzIG9mIHJhbmdlcyBiZXR3ZWVuIGl0cyBudW1iZXJzXG5cbiAgc3VtbWFyeVJhbmdlcyhbMSwyLDMsNF0pID09PSBbJzEtPjQnXVxuICBzdW1tYXJ5UmFuZ2VzKFswLCAxLCAyLCA1LCA2LCA5XSkgPT09IFtcIjAtPjJcIiwgXCI1LT42XCIsIFwiOVwiXVxuICBzdW1tYXJ5UmFuZ2VzKFswLCAxLCAyLCAzLCAzLCAzLCA0LCA1LCA2LCA3LCAyMCwgMjVdKSA9PT0gW1wiMC0+N1wiLCBcIjIwXCIsIFwiMjVcIl1cbiAgc3VtbWFyeVJhbmdlcyhbMCwgMSwgMiwgMywgMywgMywgNCwgNCwgNSwgNiwgNywgNywgOSwgOSwgMTBdKSA9PT0gW1wiMC0+N1wiLFwiOS0+MTBcIl1cbiovXG5cbi8qXG5hbGdvcmh5dG06XG5cbiAgLSBybSBkdXBsaWNhdGlvbnNcbiAgLSBtYXAgLT4gaWYgcmFuZ2UgPiAxID0+IHB1c2ggc2VwYXJhdGx5XG4gIC0gaWYgbm8gLT4gc3BsaWNlIGFuZCBpbnNlcnQgbmV3IDAtPjEgLi4uMC0+Mi4uLlxuKi9cblxuZnVuY3Rpb24gc3VtbWFyeVJhbmdlcyAoYXJyKSB7XG4gIFxuICBsZXQgcmVzdWx0ID0gW11cblxuICBsZXQgcmVtb3ZlRHVwbGljYXRlZCA9IChpdGVtLCBpKSA9PiBpdGVtICE9PSBpdGVtW2kgKyAxXVxuXG4gIGxldCB3cml0ZVJhbmdlcyA9IChpdGVtLCBpLCBhKSA9PiB7XG4gICAgaWYgKGl0ZW1baSsxXSAtIGl0ZW0gIT09IDEpIHtcbiAgICAgIHJlc3VsdC5wdXNoKGAke2l0ZW19YClcbiAgICB9IGVsc2Uge1xuICAgICAgbGV0IHBhdHRlcm4gPSBgJHtpdGVtfS0+JHtpdGVtW2krMV19YFxuXG4gICAgICBpZiAocmVzdWx0W2ldLmxlbmdoICE9PSAxKSB7XG4gICAgICAgIHJlc3VsdC5zcGxpY2UoaSwgMSwgcGF0dGVybilcbiAgICAgIH0gZWxzZXtcbiAgICAgICAgcmVzdWx0LnB1c2gocGF0dGVybilcbiAgICAgIH07XG4gICAgICBcbiAgICB9XG4gIH1cblxuICBhcnIuZmlsdGVyKHJlbW92ZUR1cGxpY2F0ZWQpXG4gICAgIC5mb3JFYWNoKHdyaXRlUmFuZ2VzKVxuXG4gIHJldHVybiByZXN1bHQ7XG59XG5cbmNvbnNvbGUubG9nKHN1bW1hcnlSYW5nZXMoWzEsMiwyLDMsMyw0XSkpO1xuY29uc29sZS5sb2coc3VtbWFyeVJhbmdlcyhbMCwgMSwgMiwgNSwgNiwgOV0pKTtcblxuIl0sInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9
+
+"use strict";
+
 /*My desicion*/
 
 Array.prototype.all = function (predicate) {
