@@ -83,38 +83,40 @@ deleteNth([1, 2, 3, 1, 2, 3, 1], 3); // [1,1,1,2] 1,1,2
 /*
 algorhytm:
 
-  - rm duplications
-  - map -> if range > 1 => push separatly
-  - if no -> splice and insert new 0->1 ...0->2...
 */
 
-function summaryRanges(arr) {
+function summaryRanges(data) {
+  var rawResults = [];
 
-  var result = [];
-
-  var removeDuplicated = function removeDuplicated(item, i) {
-    return item !== item[i + 1];
+  var rmDuplications = function rmDuplications(item, idx) {
+    return item !== data[idx + 1];
   };
 
-  var writeRanges = function writeRanges(item, i, a) {
-    if (item[i + 1] - item !== 1) {
-      result.push("" + item);
-    } else {
-      var pattern = item + "->" + item[i + 1];
+  var getLinked = function getLinked(current, idx, arr) {
+    var prev = arr[idx - 1] || current;
+    var diff = current - prev;
 
-      if (result[i].lengh !== 1) {
-        result.splice(i, 1, pattern);
-      } else {
-        result.push(pattern);
-      };
+    if (diff === 1) {
+      rawResults[rawResults.length - 1] += "" + current;
+    } else {
+      rawResults.push("" + current);
     }
   };
 
-  arr.filter(removeDuplicated).forEach(writeRanges);
+  var collapseLinked = function collapseLinked(item) {
+    if (item.length >= 2) {
+      return item[0] + "->" + item[item.length - 1];
+    } else {
+      return item;
+    }
+  };
 
-  return result;
+  data.filter(rmDuplications).forEach(getLinked);
+
+  return rawResults.map(collapseLinked);
 }
 
+<<<<<<< Updated upstream
 // console.log(summaryRanges([1,2,2,3,3,4]));
 // console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
 "use strict";
@@ -174,6 +176,16 @@ Array.prototype.odd = function () {
   
   Status: exellent (good idea to realize `average` though `sum`)
 */
+=======
+// console.log(summaryRanges([]));
+// console.log(summaryRanges([1,1,1,1]));
+// console.log(summaryRanges([1,2,3,4]));
+console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
+console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7]));
+console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7]));
+console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]));
+console.log(summaryRanges([-2, 0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10, 12]));
+>>>>>>> Stashed changes
 "use strict";
 
 /*My desicion*/
@@ -231,6 +243,7 @@ function factory(x) {
 var fives = factory(5);
 var myArray = [1, 2, 3];
 fives(myArray); //[5, 10, 15]
+<<<<<<< Updated upstream
 "use strict";
 
 /*
@@ -293,6 +306,8 @@ function isAnagramBetter(test, orig) {
 
 // console.log(isAnagramBetter("William Shakespeare","I am a weakish speller"));
 // console.log(isAnagramBetter('{;eo]ls ', '{;e!]ls '));
+=======
+>>>>>>> Stashed changes
 'use strict';
 
 String.prototype.capitalize = function () {
