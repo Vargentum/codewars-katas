@@ -32,11 +32,11 @@ gulp.task 'javascript', ->
       asi: on  # disable semicolons varning
     ))
     .pipe($.jshint.reporter(jshintStylish))
-    .pipe($.sourcemaps.init())
+    # .pipe($.sourcemaps.init())
     .pipe($.babel(
       presets: ['es2015']
     ))
-    .pipe($.sourcemaps.write())
+    # .pipe($.sourcemaps.write())
     .pipe($.concat('javascript.js'))
     .pipe(gulp.dest('./app'))
     .pipe($.livereload())
