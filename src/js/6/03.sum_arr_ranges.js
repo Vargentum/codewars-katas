@@ -42,6 +42,6 @@ function summaryRanges (arr) {
   return result;
 }
 
-console.log(summaryRanges([1,2,2,3,3,4]));
-console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
+// console.log(summaryRanges([1,2,2,3,3,4]));
+// console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
 
