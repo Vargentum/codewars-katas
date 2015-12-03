@@ -72,56 +72,6 @@ deleteNth([1, 2, 3, 1, 2, 3, 1], 3); // [1,1,1,2] 1,1,2
 "use strict";
 
 /*
-  Write function that sums ranges of ranges between its numbers
-
-  summaryRanges([1,2,3,4]) === ['1->4']
-  summaryRanges([0, 1, 2, 5, 6, 9]) === ["0->2", "5->6", "9"]
-  summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7, 20, 25]) === ["0->7", "20", "25"]
-  summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]) === ["0->7","9->10"]
-*/
-
-/*
-algorhytm:
-
-*/
-
-function summaryRanges(data) {
-  var rawResults = [];
-
-  var rmDuplications = function rmDuplications(item, idx) {
-    return item !== data[idx + 1];
-  };
-
-  var getLinked = function getLinked(current, idx, arr) {
-    var prev = arr[idx - 1] || current;
-    var diff = current - prev;
-
-    if (diff === 1) {
-      rawResults[rawResults.length - 1] += "" + current;
-    } else {
-      rawResults.push("" + current);
-    }
-  };
-
-  var collapseLinked = function collapseLinked(item) {
-    if (item.length >= 2) {
-      return item[0] + "->" + item[item.length - 1];
-    } else {
-      return item;
-    }
-  };
-
-  data.filter(rmDuplications).forEach(getLinked);
-
-  return rawResults.map(collapseLinked);
-}
-
-<<<<<<< Updated upstream
-// console.log(summaryRanges([1,2,2,3,3,4]));
-// console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
-"use strict";
-
-/*
   Create the following functions
 
   square() must return a copy of the array, containing all values squared, the original array must not be changed
@@ -176,16 +126,87 @@ Array.prototype.odd = function () {
   
   Status: exellent (good idea to realize `average` though `sum`)
 */
-=======
+"use strict";
+
+function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
+
+/*
+Your task is to sort a given string.
+Each word in the String will contain a single number.
+This number is the position the word should have in the result.
+*/
+
+function order(str) {
+  var pattern = /\d+/;
+
+  return str.split(" ").sort(function (a, b) {
+    return a.match(pattern) < b.match(pattern) ? -1 : 1;
+  }).join(" ");
+}
+
+/*
+Tip: you can simply substract a from b
+a.match(pattern) - b.match(patterns)
+*/
+
+console.log(order("is2 Thi1s T4est 3a"));
+console.log(order("4of Fo1r pe6ople g3ood th5e the2"));
+console.log(_typeof(order("")));
+"use strict";
+
+/*
+  Write function that sums ranges of ranges between its numbers
+
+  summaryRanges([1,2,3,4]) === ['1->4']
+  summaryRanges([0, 1, 2, 5, 6, 9]) === ["0->2", "5->6", "9"]
+  summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7, 20, 25]) === ["0->7", "20", "25"]
+  summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]) === ["0->7","9->10"]
+*/
+
+/*
+algorhytm:
+
+*/
+
+function summaryRanges(data) {
+  var rawResults = [];
+
+  var rmDuplications = function rmDuplications(item, idx) {
+    return item !== data[idx + 1];
+  };
+
+  var getLinked = function getLinked(current, idx, arr) {
+    var prev = arr[idx - 1] || current;
+    var diff = current - prev;
+
+    if (diff === 1) {
+      rawResults[rawResults.length - 1] += "" + current;
+    } else {
+      rawResults.push("" + current);
+    }
+  };
+
+  var collapseLinked = function collapseLinked(item) {
+    if (item.length >= 2) {
+      return item[0] + "->" + item[item.length - 1];
+    } else {
+      return item;
+    }
+  };
+
+  data.filter(rmDuplications).forEach(getLinked);
+
+  return rawResults.map(collapseLinked);
+}
+
 // console.log(summaryRanges([]));
 // console.log(summaryRanges([1,1,1,1]));
 // console.log(summaryRanges([1,2,3,4]));
-console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
-console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7]));
-console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7]));
-console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]));
-console.log(summaryRanges([-2, 0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10, 12]));
->>>>>>> Stashed changes
+// console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
+// console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7]));
+// console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7]));
+// console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]));
+// console.log(summaryRanges([-2,0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10, 12]));
 "use strict";
 
 /*My desicion*/
@@ -243,7 +264,6 @@ function factory(x) {
 var fives = factory(5);
 var myArray = [1, 2, 3];
 fives(myArray); //[5, 10, 15]
-<<<<<<< Updated upstream
 "use strict";
 
 /*
@@ -306,8 +326,6 @@ function isAnagramBetter(test, orig) {
 
 // console.log(isAnagramBetter("William Shakespeare","I am a weakish speller"));
 // console.log(isAnagramBetter('{;eo]ls ', '{;e!]ls '));
-=======
->>>>>>> Stashed changes
 'use strict';
 
 String.prototype.capitalize = function () {
