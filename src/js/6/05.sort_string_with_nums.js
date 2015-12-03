@@ -17,6 +17,6 @@ Tip: you can simply substract a from b
 a.match(pattern) - b.match(patterns)
 */
 
-console.log(order("is2 Thi1s T4est 3a"));
-console.log(order("4of Fo1r pe6ople g3ood th5e the2"));
-console.log(typeof order(""));
+// console.log(order("is2 Thi1s T4est 3a"));
+// console.log(order("4of Fo1r pe6ople g3ood th5e the2"));
+// console.log(typeof order(""));
