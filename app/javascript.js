@@ -128,8 +128,6 @@ Array.prototype.odd = function () {
 */
 "use strict";
 
-function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
-
 /*
 Your task is to sort a given string.
 Each word in the String will contain a single number.
@@ -149,9 +147,50 @@ Tip: you can simply substract a from b
 a.match(pattern) - b.match(patterns)
 */
 
-console.log(order("is2 Thi1s T4est 3a"));
-console.log(order("4of Fo1r pe6ople g3ood th5e the2"));
-console.log(_typeof(order("")));
+// console.log(order("is2 Thi1s T4est 3a"));
+// console.log(order("4of Fo1r pe6ople g3ood th5e the2"));
+// console.log(typeof order(""));
+"use strict";
+
+/*
+Create a function christmasTree(height) that returns a christmas tree of the correct height
+
+christmasTree(5) should return:
+
+    *    
+   ***   
+  *****  
+ ******* 
+*********
+
+
+Algo:
+  - calc the foundation width
+  - draw reverted tree
+    - draw foundation
+    - 
+  - reverse array
+  - join with \n
+
+  5 white 1 star 5 white
+  4 white 3 star 4 white
+
+*/
+
+function christmasTree(height) {
+  var base = height * 2 - 1;
+  var half = Math.floor(base / 2);
+  var result = [];
+
+  for (var i = 0; i < height; i++) {
+    var spaceCount = half - i;
+    result.push(" ".repeat(spaceCount) + "*".repeat(base - spaceCount * 2) + " ".repeat(spaceCount));
+  }
+
+  return result.join("\n");
+}
+
+// console.log(christmasTree(50))
 "use strict";
 
 /*
