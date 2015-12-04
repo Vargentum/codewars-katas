@@ -194,6 +194,89 @@ function christmasTree(height) {
 "use strict";
 
 /*
+Implement a function sometimes that takes
+another funciton as an argument and returns
+a new version of that function that will behave as the following:
+
+// The first 3 tmes we call s it returns add's expected output
+// But the 4th time it returns a default message 'hmm, I don't know!
+
+// Each consecutive odd call returns add's expected output
+// Each consecutive even call doesn't work and returns 'hmm, I don't know!'
+
+
+Algo:
+  make wrapper
+  save count of function call
+  check 1 equality (4) => after
+  toggle check2 mark to true
+  check2 equality
+
+*/
+
+function sometimes(fn) {
+  var _this = this;
+
+  var callCount = 0;
+  var initStrange = false;
+  var phrase = "hmm, I don't know!";
+
+  return function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    callCount++;
+    if (callCount === 4) {
+      initStrange = true;
+      return phrase;
+    }
+    if (callCount % 2 === 0 && initStrange) {
+      return phrase;
+    }
+    return fn.apply(_this, args);
+  };
+}
+
+var sum = function sum(a, b) {
+  return a + b;
+};
+
+var sumStrange = sometimes(sum);
+
+// console.log(sumStrange(1,2));
+// console.log(sumStrange(1,2));
+// console.log(sumStrange(1,2));
+// console.log(sumStrange(1,2)); // hmm, I don't know! (4)
+// console.log(sumStrange(1,2));
+// console.log(sumStrange(1,2)); // hmm, I don't know! (consequence odd)
+
+/*Tips:
+  
+  use equality operators strength
+  use ternary to shorten
+*/
+
+function sometimes1(fn) {
+  var i = 0;
+
+  return function () {
+    ++i;
+    return i < 4 || i % 2 ? fn.apply(undefined, arguments) : "hmm, I don't know!";
+  };
+}
+
+// let sumStrange1 = sometimes(sum);
+
+// console.log(sumStrange1(1,2));
+// console.log(sumStrange1(1,2));
+// console.log(sumStrange1(1,2));
+// console.log(sumStrange1(1,2)); // hmm, I don't know! (4)
+// console.log(sumStrange1(1,2));
+// console.log(sumStrange1(1,2)); // hmm, I don't know! (consequence odd)
+"use strict";
+
+/*
   Write function that sums ranges of ranges between its numbers
 
   summaryRanges([1,2,3,4]) === ['1->4']
