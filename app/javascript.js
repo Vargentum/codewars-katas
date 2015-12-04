@@ -326,7 +326,7 @@ function isAnagram(test, orig) {
 
   function reduceToLetters(str) {
     return str.toLowerCase().replace(/[^a-z0-9]*/g, "").split("").reduce(function (acc, l) {
-      !acc[l] ? acc[l] = 1 : acc[l] += 1;
+      // !acc[l] ? acc[l] = 1 : acc[l] += 1  cause to warning
       return acc;
     }, {});
   }

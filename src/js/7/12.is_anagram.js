@@ -22,7 +22,7 @@ function isAnagram (test, orig) {
               .replace(/[^a-z0-9]*/g, "")
               .split("")
               .reduce((acc, l) => {
-                 !acc[l] ? acc[l] = 1 : acc[l] += 1
+                 // !acc[l] ? acc[l] = 1 : acc[l] += 1  cause to warning
                  return acc
                }, {})
   }
