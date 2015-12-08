@@ -39,4 +39,4 @@ function christmasTree (height) {
   return result.join("\n")
 }
 
-// console.log(christmasTree(50))
+// console.log(christmasTree(20))

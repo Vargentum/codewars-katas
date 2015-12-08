@@ -19,12 +19,10 @@ function validate (message) {
   return validator.test(message)
 }
 
-
-
-console.log(validate("Is this a right message?"))
-console.log(validate("MDZHB 85 596 KLASA 81 00 02 91"))
-console.log(validate("MDZHB 12 733 EDINENIE 67 79 66 32"))
-console.log(validate("MDZHV 60 130 VATRUKH 58 89 54 54"))
+// console.log(validate("Is this a right message?"))
+// console.log(validate("MDZHB 85 596 KLASA 81 00 02 91"))
+// console.log(validate("MDZHB 12 733 EDINENIE 67 79 66 32"))
+// console.log(validate("MDZHV 60 130 VATRUKH 58 89 54 54"))
 
 
 /*Tips:
