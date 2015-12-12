@@ -339,6 +339,105 @@ function mixWords(str) {
 // console.log(mixWords("Утверждения из Интернета правы в той своей части, что некоторые слова с переставленными буквами действительно достаточно просты для понимания. Но наши исследования доказали, что перестановки букв в словах влекут за собой изменение значения слова."))
 // console.log(mixWords("В этой статье мы приводим результаты исследований, показывающие, что, хотя некоторые варианты предложений с переставленными буквами довольно просты для чтения и восприятия, к иным вариантам это не относится, и что в общем всегда необходимо приложить определенные усилия для чтения текста, содержащего слова с переставленными буквами."))
 // console.log(mixWords("Но главный вывод из наших исследований заключается в том, что, хотя перестановка букв позволяет довольно легко читать и воспринимать прочитанное, чтение такого текста всегда требует особых усилий по сравнению с чтением нормального текста."))
+'use strict';
+
+/*
+Write a generator sequence_gen ( sequenceGen in JavaScript)
+that, given the first terms of a sequence will generate a (potentially)
+infinite amount of terms, where each subsequent term is the sum 
+of the previous x terms where x is the amount of initial arguments 
+(examples of such sequences are the Fibonacci, Tribonacci and Lucas number sequences).
+
+
+fib = sequenceGen(0, 1)
+fib.next().value = 0 // first term (provided)
+fib.next().value = 1 // second term (provided)
+fib.next().value = 1 // third term (sum of first and second terms)
+fib.next().value = 2 // fourth term (sum of second and third terms)
+fib.next().value = 3 // fifth term (sum of third and fourth terms)
+fib.next().value = 5 // sixth term (sum of fourth and fifth terms)
+fib.next().value = 8 // seventh term (sum of fifth and sixth terms)
+
+*/
+
+function sequenceGen() {
+  for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+    args[_key] = arguments[_key];
+  }
+
+  var i = 0;
+  var seq = [];
+
+  function pushPrevSum() {
+    var next = 0;
+    for (var j = args.length; j > 0; j--) {
+      next += seq[i - j];
+    };
+    seq.push(next);
+  }
+
+  return {
+    next: function next() {
+      typeof args[i] === 'number' ? seq.push(args[i]) : pushPrevSum();
+      i++;
+      return {
+        value: seq[seq.length - 1]
+      };
+    }
+  };
+}
+
+/*Expirience:
+
+  if you need to return an iterator - return `this` in [Symbol.iterator] method
+*/
+
+var fib = sequenceGen(0, 1);
+console.log(fib.next().value); // 0
+console.log(fib.next().value); // 1
+console.log(fib.next().value); // 1
+console.log(fib.next().value); // 2
+console.log(fib.next().value); // 3
+console.log(fib.next().value); // 5
+console.log(fib.next().value); // 8
+
+var trib = sequenceGen(0, 1, 1);
+console.log(trib.next().value); // 0
+console.log(trib.next().value); // 1
+console.log(trib.next().value); // 1
+console.log(trib.next().value); // 2
+console.log(trib.next().value); // 4
+console.log(trib.next().value); // 7
+console.log(trib.next().value); // ?
+console.log(trib.next().value); // ?
+"use strict";
+
+/*
+You're a support engineer and you have to write a regex that captures the following information from our log files:
+
+the date
+the log level (ERROR, INFO or DEBUG),
+the user
+the main function
+the sub function
+the logged message
+
+You asked your supervisor about the rules defining all the logs. He told you that: 
+  the sub function may or may not be here,
+  if no sub-function return undefined, 
+    the log level can only be one of the 3 presented,
+  the logged message contains any kind of character, 
+  all fields are separated by arbitrary spaces (but at least one).
+
+Unfortunately he's not exactly sure about the rest,
+  "use your common sense, there is not trick" he said.
+*/
+
+var logparser = /^(\d{4}(?:-\d{2}){2}\s*\d{2}(?::\d{2}){2},\d{3})\s*(ERROR|INFO|DEBUG)\s*\[(\w+?):(\w+?)(?::(\w+?))?\]\s*([\s\S]+)$/;
+
+console.log(logparser.test("2003-07-08 16:49:45,896 ERROR [user1:mainfunction:subfunction] We have a problem,"));
+console.log(logparser.test("2003-07-08 16:49:46,896 INFO [user1:mainfunction] We don't have a problem"));
+console.log("2003-07-08 16:49:46,896 INFO [user1:mainfunction:subfunction] We don't have a problem".match(logparser));
 "use strict";
 
 /*
