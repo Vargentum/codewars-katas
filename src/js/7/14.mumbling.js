@@ -1,0 +1,40 @@
+/*
+This time no story, no theory. The examples below show you how to write function accum:
+
+Examples:
+
+accum("abcd") --> "A-Bb-Ccc-Dddd"
+accum("RqaEzty") --> "R-Qq-Aaa-Eeee-Zzzzz-Tttttt-Yyyyyyy"
+accum("cwAt") --> "C-Ww-Aaa-Tttt"
+*/
+
+const accum = (str) => {
+  return str
+          .split('')
+          .map((c,i) => c.toUpperCase() + _.repeat(c.toLowerCase(), i))
+          .join('-')
+}
+console.log(accum('aBcD'))
+
+
+
+const accum1 = (str) => {
+  return str
+          .split('')
+          .map((char,i) => {
+            let res = char.toUpperCase();
+            while (i > 0) {
+              res += char.toLowerCase()
+              i--;
+            }
+            return res;
+          })
+          .join('-')
+}
+console.log(accum1('aBcD'))
+
+
+/*
+Tip: use Array(n+1).join(char) to create string repeating char n-times! 
+
+*/
