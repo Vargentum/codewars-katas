@@ -530,16 +530,65 @@ function Archiver() {
 
 var a = new Archiver();
 
-a.temperature = 20;
-a.temperature = 30;
-console.log(a.temperature);
-console.log(a.getArchive());
+// a.temperature = 20
+// a.temperature = 30
+// console.log(a.temperature)
+// console.log(a.getArchive())
 
 /*
   From others decisions: 
     you can store `temperature` value in additional variable,
     assign it in setter to setted value
     return it in getter
+*/
+"use strict";
+
+/*
+Add a groupBy method to Array.prototype 
+so that elements in an array could be grouped by the result of evaluating a function on each eleme
+
+The method should return an object, in which for each different value returned by the function 
+there is a property whose value is the array of elements that return the same value.
+
+If no function is passed, the element itself should be taken
+
+
+Algo:
+  use reduce
+
+  find keys with acc[fn(x)]
+  filter duplicated keys
+
+  find values associated with keys:
+    filter array for each value through `fn` equal `
+
+*/
+
+Array.prototype.groupBy = function (fn) {
+  var _this = this;
+
+  if (!fn) return this.groupBy(function (x) {
+    return x;
+  });
+
+  return this.reduce(function (acc, x) {
+    if (acc[fn(x)]) return acc;
+
+    acc[fn(x)] = _this.filter(function (i) {
+      return fn(x) === fn(i);
+    });
+    return acc;
+  }, {});
+};
+
+console.log([1, 2, 3, 2, 4, 1, 5, 1, 6].groupBy());
+console.log([1, 2, 3, 2, 4, 1, 5, 1, 6].groupBy(function (val) {
+  return val % 3;
+}));
+
+/*Enlightment:
+  
+
 */
 "use strict";
 
@@ -764,7 +813,7 @@ var accum = function accum(str) {
     return c.toUpperCase() + _.repeat(c.toLowerCase(), i);
   }).join('-');
 };
-console.log(accum('aBcD'));
+// console.log(accum('aBcD'))
 
 var accum1 = function accum1(str) {
   return str.split('').map(function (char, i) {
@@ -776,7 +825,7 @@ var accum1 = function accum1(str) {
     return res;
   }).join('-');
 };
-console.log(accum1('aBcD'));
+// console.log(accum1('aBcD'))
 
 /*
 Tip: use Array(n+1).join(char) to create string repeating char n-times! 
