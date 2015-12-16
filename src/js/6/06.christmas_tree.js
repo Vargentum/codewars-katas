@@ -39,4 +39,25 @@ function christmasTree (height) {
   return result.join("\n")
 }
 
-// console.log(christmasTree(20))
+
+
+function christmasTreeWithoutRepeat (height) {
+  let base = height * 2 - 1
+  let half = Math.floor(base / 2)
+  let result = []
+  let repeat = (char, n) => new Array(n + 1).join(char) 
+
+  for (let i = 0; i < height; i++) {
+    let spaceCount = half - i;
+    result.push(repeat(" ", spaceCount)
+              + repeat("*", base - spaceCount * 2)
+              + repeat(" ", spaceCount)
+            )
+  }
+
+  return result.join("\n")
+}
+
+// console.log(christmasTree(5))
+// console.log('------------')
+// console.log(christmasTreeWithoutRepeat(5))

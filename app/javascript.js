@@ -343,7 +343,25 @@ function christmasTree(height) {
   return result.join("\n");
 }
 
-// console.log(christmasTree(20))
+function christmasTreeWithoutRepeat(height) {
+  var base = height * 2 - 1;
+  var half = Math.floor(base / 2);
+  var result = [];
+  var repeat = function repeat(char, n) {
+    return new Array(n + 1).join(char);
+  };
+
+  for (var i = 0; i < height; i++) {
+    var spaceCount = half - i;
+    result.push(repeat(" ", spaceCount) + repeat("*", base - spaceCount * 2) + repeat(" ", spaceCount));
+  }
+
+  return result.join("\n");
+}
+
+// console.log(christmasTree(5))
+// console.log('------------')
+// console.log(christmasTreeWithoutRepeat(5))
 "use strict";
 
 /*
@@ -654,6 +672,105 @@ function fizzBuzzFactory(instr) {
 }
 "use strict";
 
+/*
+Implement Archiver constructor with following behavior:
+
+//new Date() == '2013-09-24...Z'
+var arc = new Archiver();
+arc.temperature = 33;
+arc.temperature = 28;
+arc.temperature = 21;
+arc.getArchive() // == [{date: 2013-09-24..., val:33},{date: 2013-09-24..., val:28},{date: 2013-09-24..., val:21}]
+
+
+Hint: Use get/set functions
+*/
+
+function Archiver() {
+
+  var archive = [];
+
+  Object.defineProperty(this, "temperature", {
+    set: function set(t) {
+      archive.push({
+        date: new Date(),
+        val: t
+      });
+    },
+    get: function get() {
+      return archive[archive.length - 1].val;
+    }
+  });
+
+  this.getArchive = function () {
+    return archive;
+  };
+}
+
+var a = new Archiver();
+
+// a.temperature = 20
+// a.temperature = 30
+// console.log(a.temperature)
+// console.log(a.getArchive())
+
+/*
+  From others decisions: 
+    you can store `temperature` value in additional variable,
+    assign it in setter to setted value
+    return it in getter
+*/
+"use strict";
+
+/*
+Add a groupBy method to Array.prototype 
+so that elements in an array could be grouped by the result of evaluating a function on each eleme
+
+The method should return an object, in which for each different value returned by the function 
+there is a property whose value is the array of elements that return the same value.
+
+If no function is passed, the element itself should be taken
+
+
+Algo:
+  use reduce
+
+  find keys with acc[fn(x)]
+  filter duplicated keys
+
+  find values associated with keys:
+    filter array for each value through `fn` equal `
+
+*/
+
+Array.prototype.groupBy = function (fn) {
+  var _this = this;
+
+  if (!fn) return this.groupBy(function (x) {
+    return x;
+  });
+
+  return this.reduce(function (acc, x) {
+    if (acc[fn(x)]) return acc;
+
+    acc[fn(x)] = _this.filter(function (i) {
+      return fn(x) === fn(i);
+    });
+    return acc;
+  }, {});
+};
+
+console.log([1, 2, 3, 2, 4, 1, 5, 1, 6].groupBy());
+console.log([1, 2, 3, 2, 4, 1, 5, 1, 6].groupBy(function (val) {
+  return val % 3;
+}));
+
+/*Enlightment:
+  
+
+*/
+"use strict";
+
 /*My desicion*/
 
 Array.prototype.all = function (predicate) {
@@ -802,6 +919,41 @@ function validate(message) {
 /*Tips:
   use /^pattern$/ - to search from start (^) to end ($) of the string.
   maybe use " " spaces instead of \s ?
+*/
+'use strict';
+
+/*
+This time no story, no theory. The examples below show you how to write function accum:
+
+Examples:
+
+accum("abcd") --> "A-Bb-Ccc-Dddd"
+accum("RqaEzty") --> "R-Qq-Aaa-Eeee-Zzzzz-Tttttt-Yyyyyyy"
+accum("cwAt") --> "C-Ww-Aaa-Tttt"
+*/
+
+var accum = function accum(str) {
+  return str.split('').map(function (c, i) {
+    return c.toUpperCase() + _.repeat(c.toLowerCase(), i);
+  }).join('-');
+};
+// console.log(accum('aBcD'))
+
+var accum1 = function accum1(str) {
+  return str.split('').map(function (char, i) {
+    var res = char.toUpperCase();
+    while (i > 0) {
+      res += char.toLowerCase();
+      i--;
+    }
+    return res;
+  }).join('-');
+};
+// console.log(accum1('aBcD'))
+
+/*
+Tip: use Array(n+1).join(char) to create string repeating char n-times! 
+
 */
 'use strict';
 
