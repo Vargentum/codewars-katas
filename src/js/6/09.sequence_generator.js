@@ -49,23 +49,23 @@ function sequenceGen (...args) {
 
 
 let fib = sequenceGen(0, 1)
-console.log(fib.next().value) // 0 
-console.log(fib.next().value) // 1 
-console.log(fib.next().value) // 1 
-console.log(fib.next().value) // 2 
-console.log(fib.next().value) // 3 
-console.log(fib.next().value) // 5 
-console.log(fib.next().value) // 8 
+// console.log(fib.next().value) // 0 
+// console.log(fib.next().value) // 1 
+// console.log(fib.next().value) // 1 
+// console.log(fib.next().value) // 2 
+// console.log(fib.next().value) // 3 
+// console.log(fib.next().value) // 5 
+// console.log(fib.next().value) // 8 
 
 
 
 let trib = sequenceGen(0,1,1)
-console.log(trib.next().value) // 0 
-console.log(trib.next().value) // 1 
-console.log(trib.next().value) // 1 
-console.log(trib.next().value) // 2 
-console.log(trib.next().value) // 4 
-console.log(trib.next().value) // 7 
-console.log(trib.next().value) // ?
-console.log(trib.next().value) // ?
+// console.log(trib.next().value) // 0 
+// console.log(trib.next().value) // 1 
+// console.log(trib.next().value) // 1 
+// console.log(trib.next().value) // 2 
+// console.log(trib.next().value) // 4 
+// console.log(trib.next().value) // 7 
+// console.log(trib.next().value) // ?
+// console.log(trib.next().value) // ?
 
