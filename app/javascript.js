@@ -190,7 +190,25 @@ function christmasTree(height) {
   return result.join("\n");
 }
 
-// console.log(christmasTree(20))
+function christmasTreeWithoutRepeat(height) {
+  var base = height * 2 - 1;
+  var half = Math.floor(base / 2);
+  var result = [];
+  var repeat = function repeat(char, n) {
+    return new Array(n + 1).join(char);
+  };
+
+  for (var i = 0; i < height; i++) {
+    var spaceCount = half - i;
+    result.push(repeat(" ", spaceCount) + repeat("*", base - spaceCount * 2) + repeat(" ", spaceCount));
+  }
+
+  return result.join("\n");
+}
+
+// console.log(christmasTree(5))
+// console.log('------------')
+// console.log(christmasTreeWithoutRepeat(5))
 "use strict";
 
 /*
@@ -393,23 +411,23 @@ function sequenceGen() {
 */
 
 var fib = sequenceGen(0, 1);
-console.log(fib.next().value); // 0
-console.log(fib.next().value); // 1
-console.log(fib.next().value); // 1
-console.log(fib.next().value); // 2
-console.log(fib.next().value); // 3
-console.log(fib.next().value); // 5
-console.log(fib.next().value); // 8
+// console.log(fib.next().value) // 0
+// console.log(fib.next().value) // 1
+// console.log(fib.next().value) // 1
+// console.log(fib.next().value) // 2
+// console.log(fib.next().value) // 3
+// console.log(fib.next().value) // 5
+// console.log(fib.next().value) // 8
 
 var trib = sequenceGen(0, 1, 1);
-console.log(trib.next().value); // 0
-console.log(trib.next().value); // 1
-console.log(trib.next().value); // 1
-console.log(trib.next().value); // 2
-console.log(trib.next().value); // 4
-console.log(trib.next().value); // 7
-console.log(trib.next().value); // ?
-console.log(trib.next().value); // ?
+// console.log(trib.next().value) // 0
+// console.log(trib.next().value) // 1
+// console.log(trib.next().value) // 1
+// console.log(trib.next().value) // 2
+// console.log(trib.next().value) // 4
+// console.log(trib.next().value) // 7
+// console.log(trib.next().value) // ?
+// console.log(trib.next().value) // ?
 "use strict";
 
 /*
@@ -435,9 +453,94 @@ Unfortunately he's not exactly sure about the rest,
 
 var logparser = /^(\d{4}(?:-\d{2}){2}\s*\d{2}(?::\d{2}){2},\d{3})\s*(ERROR|INFO|DEBUG)\s*\[(\w+?):(\w+?)(?::(\w+?))?\]\s*([\s\S]+)$/;
 
-console.log(logparser.test("2003-07-08 16:49:45,896 ERROR [user1:mainfunction:subfunction] We have a problem,"));
-console.log(logparser.test("2003-07-08 16:49:46,896 INFO [user1:mainfunction] We don't have a problem"));
-console.log("2003-07-08 16:49:46,896 INFO [user1:mainfunction:subfunction] We don't have a problem".match(logparser));
+// console.log(logparser.test("2003-07-08 16:49:45,896 ERROR [user1:mainfunction:subfunction] We have a problem,"))
+// console.log(logparser.test("2003-07-08 16:49:46,896 INFO [user1:mainfunction] We don't have a problem"))
+// console.log("2003-07-08 16:49:46,896 INFO [user1:mainfunction:subfunction] We don't have a problem".match(logparser))
+"use strict";
+
+/*
+In this kata, you will get an array of unique numbers, paired with strings, like
+
+[(3, "Fizz"), (5, "Buzz"), (15, "FizzBuzz")]
+
+
+Depending on the language, 
+that's either a list/array of tuples or an array of arrays. It's always sorted.
+
+Your job is to return another function,
+that—given a number n—returns the appropriate string.
+How do you know the correct string? 
+Well, it's the one paired with the largest key that still divides the number n!
+
+
+var myFizz = fizzBuzzFactory([[3, "Fizz"], [5, "Buzz"], [15, "FizzBuzz"]])
+myFizz(3)  === "Fizz"
+myFizz(4)  === "4"
+myFizz(5)  === "Buzz"
+myFizz(15) === "FizzBuzz"
+
+*/
+
+function fizzBuzzFactory(instr) {
+
+  return function (int) {
+
+    for (var i = instr.length - 1; i >= 0; i--) {
+      if (int % instr[i][0] === 0) return instr[i][1];
+    };
+    return "" + int;
+  };
+}
+"use strict";
+
+/*
+Implement Archiver constructor with following behavior:
+
+//new Date() == '2013-09-24...Z'
+var arc = new Archiver();
+arc.temperature = 33;
+arc.temperature = 28;
+arc.temperature = 21;
+arc.getArchive() // == [{date: 2013-09-24..., val:33},{date: 2013-09-24..., val:28},{date: 2013-09-24..., val:21}]
+
+
+Hint: Use get/set functions
+*/
+
+function Archiver() {
+
+  var archive = [];
+
+  Object.defineProperty(this, "temperature", {
+    set: function set(t) {
+      archive.push({
+        date: new Date(),
+        val: t
+      });
+    },
+    get: function get() {
+      return archive[archive.length - 1].val;
+    }
+  });
+
+  this.getArchive = function () {
+    return archive;
+  };
+}
+
+var a = new Archiver();
+
+a.temperature = 20;
+a.temperature = 30;
+console.log(a.temperature);
+console.log(a.getArchive());
+
+/*
+  From others decisions: 
+    you can store `temperature` value in additional variable,
+    assign it in setter to setted value
+    return it in getter
+*/
 "use strict";
 
 /*
@@ -643,6 +746,41 @@ function validate(message) {
 /*Tips:
   use /^pattern$/ - to search from start (^) to end ($) of the string.
   maybe use " " spaces instead of \s ?
+*/
+'use strict';
+
+/*
+This time no story, no theory. The examples below show you how to write function accum:
+
+Examples:
+
+accum("abcd") --> "A-Bb-Ccc-Dddd"
+accum("RqaEzty") --> "R-Qq-Aaa-Eeee-Zzzzz-Tttttt-Yyyyyyy"
+accum("cwAt") --> "C-Ww-Aaa-Tttt"
+*/
+
+var accum = function accum(str) {
+  return str.split('').map(function (c, i) {
+    return c.toUpperCase() + _.repeat(c.toLowerCase(), i);
+  }).join('-');
+};
+console.log(accum('aBcD'));
+
+var accum1 = function accum1(str) {
+  return str.split('').map(function (char, i) {
+    var res = char.toUpperCase();
+    while (i > 0) {
+      res += char.toLowerCase();
+      i--;
+    }
+    return res;
+  }).join('-');
+};
+console.log(accum1('aBcD'));
+
+/*
+Tip: use Array(n+1).join(char) to create string repeating char n-times! 
+
 */
 'use strict';
 
