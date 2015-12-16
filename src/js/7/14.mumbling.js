@@ -14,7 +14,7 @@ const accum = (str) => {
           .map((c,i) => c.toUpperCase() + _.repeat(c.toLowerCase(), i))
           .join('-')
 }
-console.log(accum('aBcD'))
+// console.log(accum('aBcD'))
 
 
 
