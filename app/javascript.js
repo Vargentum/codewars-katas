@@ -1,3 +1,47 @@
+/*
+Your mission: write a function nouveau 
+(that's French for "new") which takes
+one function parameter (the constructor), 
+plus an unknown number of additional parameters 
+of any type (arguments for the constructor).
+
+When invoked, nouveau should do everything new does
+and return the same object new would evaluate to, as specified above.
+
+
+What does `new` operator do?
+
+1. creates an empty object (instance) which prototypally inherits
+   from Constructor.prototype
+
+2. Binds Constructor to instnce (this is instance) and invokes 
+constructor with it arguments
+
+3. If Constructor returned value is an object, evaluate result to it object.
+4. If no - Evalueate to instance
+*/
+
+// function nouveau (Constructor, ...args) {
+//   let res = {}
+//   res.setPrototype(Constructor.prototype)
+//   res = Constructor.apply(res, args)
+//   return res;
+// }
+
+// function Person (name, age) {
+//   this.name = name;
+//   this.age = age;
+// }
+// Person.prototype.introduce = function(){
+//   return 'My name is ' + this.name + ' and I am ' + this.age;
+// };
+
+// var jack = new Person('Jack', 40);
+// var john = nouveau(Person, 'John', 30); // same result as above
+
+// console.log( john.introduce() ); // My name is John and I am 30
+// console.log( jack.introduce() ); // My name is Jack and I am 40
+"use strict";
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {
@@ -69,6 +113,115 @@ function deleteNth(arr, x) {
 }
 
 deleteNth([1, 2, 3, 1, 2, 3, 1], 3); // [1,1,1,2] 1,1,2
+"use strict";
+
+/*
+
+function summaryRanges(nums)
+that given a sorted array of numbers, returns the summary of its ranges.
+For example:
+
+summaryRanges([1,2,3,4]) === ['1->4']
+summaryRanges([0, 1, 2, 5, 6, 9]) === ["0->2", "5->6", "9"]
+summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7]) === ["0->7"]
+summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]) === ["0->7","9->10"]
+summaryRanges([-2,0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10, 12]) ===["-2", "0->7", "9->10", "12"]
+summaryRanges([1,1,1,1,1]) === ['1']
+
+
+Algo: extract array ranges 
+
+
+*/
+
+function Range(start, end) {
+  var _this = this;
+
+  var rng = [start];
+
+  while (start <= end) {
+    rng.push(start);
+    start++;
+  }
+
+  this.add = function () {
+    var last = rng[rng.length - 1];
+    rng.push(last + 1);
+    return _this;
+  };
+
+  this.toString = function () {
+    if (rng.length > 1) {
+      return rng[0] + "->" + rng[rng.length - 1];
+    } else {
+      return "" + rng[0];
+    }
+  };
+}
+
+function summaryRanges(range) {
+  var res = [];
+
+  range.forEach(function (crt, idx) {
+    var prev = range[idx - 1];
+    var diff = crt - prev;
+
+    if (prev === undefined || diff > 1) {
+      res.push(new Range(crt));
+    } else if (diff === 1) {
+      res[res.length - 1].add();
+    }
+  });
+
+  return res.map(function (i) {
+    return i.toString();
+  });
+}
+
+// console.log(summaryRanges([0, 1, 2, 5, 6, 9]))
+// console.log(summaryRanges([-2,0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10, 12]))
+
+/*
+Enlightment: 
+  
+  use OOP appropach: create your own objects, and define it's behavior
+
+  procedural? approach can be too complicated
+*/
+
+/*
+OLD: too complicated, cant handle nn and nn+ integers length (weakest part)
+
+function summaryRanges (data) {
+  let rawResults = []  
+  
+  let rmDuplications = (item, idx) => item !== data[idx + 1]
+
+  let getLinked = (current, idx, arr) => {
+    let prev = arr[idx - 1] || current
+    let diff = current - prev
+
+    if (diff === 1) {
+      rawResults[rawResults.length - 1] += `${current}`
+    } else {
+      rawResults.push(`${current}`)
+   }
+  }
+
+  let collapseLinked = (item) => {
+    if (item.length >= 2) {
+      return `${item[0]}->${item[item.length - 1]}`
+    } else {
+      return item
+    }
+  }
+
+  data.filter(rmDuplications)
+     .forEach(getLinked);
+
+  return rawResults.map(collapseLinked)
+}
+*/
 "use strict";
 
 /*
@@ -339,6 +492,32 @@ function mixWords(str) {
 // console.log(mixWords("Утверждения из Интернета правы в той своей части, что некоторые слова с переставленными буквами действительно достаточно просты для понимания. Но наши исследования доказали, что перестановки букв в словах влекут за собой изменение значения слова."))
 // console.log(mixWords("В этой статье мы приводим результаты исследований, показывающие, что, хотя некоторые варианты предложений с переставленными буквами довольно просты для чтения и восприятия, к иным вариантам это не относится, и что в общем всегда необходимо приложить определенные усилия для чтения текста, содержащего слова с переставленными буквами."))
 // console.log(mixWords("Но главный вывод из наших исследований заключается в том, что, хотя перестановка букв позволяет довольно легко читать и воспринимать прочитанное, чтение такого текста всегда требует особых усилий по сравнению с чтением нормального текста."))
+"use strict";
+
+/*
+Write a function which takes one parameter
+representing the dimensions of a checkered board. 
+The board will always be square, so 5 means you will need a 5x5 board.
+
+checkeredBoard(5)
+
+■ □ ■ □ ■
+□ ■ □ ■ □
+■ □ ■ □ ■
+□ ■ □ ■ □
+■ □ ■ □ ■
+*/
+
+function checkeredBoard(dim) {
+  var res = "";
+  for (var i = 1; i <= dim * dim; i++) {
+    i % 2 === 0 ? res += "□ " : res += "■ ";
+    i % dim === 0 ? res += "\n" : "";
+  }
+  return res;
+}
+
+// console.log(checkeredBoard(11));
 'use strict';
 
 /*
@@ -393,23 +572,23 @@ function sequenceGen() {
 */
 
 var fib = sequenceGen(0, 1);
-console.log(fib.next().value); // 0
-console.log(fib.next().value); // 1
-console.log(fib.next().value); // 1
-console.log(fib.next().value); // 2
-console.log(fib.next().value); // 3
-console.log(fib.next().value); // 5
-console.log(fib.next().value); // 8
+// console.log(fib.next().value) // 0
+// console.log(fib.next().value) // 1
+// console.log(fib.next().value) // 1
+// console.log(fib.next().value) // 2
+// console.log(fib.next().value) // 3
+// console.log(fib.next().value) // 5
+// console.log(fib.next().value) // 8
 
 var trib = sequenceGen(0, 1, 1);
-console.log(trib.next().value); // 0
-console.log(trib.next().value); // 1
-console.log(trib.next().value); // 1
-console.log(trib.next().value); // 2
-console.log(trib.next().value); // 4
-console.log(trib.next().value); // 7
-console.log(trib.next().value); // ?
-console.log(trib.next().value); // ?
+// console.log(trib.next().value) // 0
+// console.log(trib.next().value) // 1
+// console.log(trib.next().value) // 1
+// console.log(trib.next().value) // 2
+// console.log(trib.next().value) // 4
+// console.log(trib.next().value) // 7
+// console.log(trib.next().value) // ?
+// console.log(trib.next().value) // ?
 "use strict";
 
 /*
@@ -435,64 +614,44 @@ Unfortunately he's not exactly sure about the rest,
 
 var logparser = /^(\d{4}(?:-\d{2}){2}\s*\d{2}(?::\d{2}){2},\d{3})\s*(ERROR|INFO|DEBUG)\s*\[(\w+?):(\w+?)(?::(\w+?))?\]\s*([\s\S]+)$/;
 
-console.log(logparser.test("2003-07-08 16:49:45,896 ERROR [user1:mainfunction:subfunction] We have a problem,"));
-console.log(logparser.test("2003-07-08 16:49:46,896 INFO [user1:mainfunction] We don't have a problem"));
-console.log("2003-07-08 16:49:46,896 INFO [user1:mainfunction:subfunction] We don't have a problem".match(logparser));
+// console.log(logparser.test("2003-07-08 16:49:45,896 ERROR [user1:mainfunction:subfunction] We have a problem,"))
+// console.log(logparser.test("2003-07-08 16:49:46,896 INFO [user1:mainfunction] We don't have a problem"))
+// console.log("2003-07-08 16:49:46,896 INFO [user1:mainfunction:subfunction] We don't have a problem".match(logparser))
 "use strict";
 
 /*
-  Write function that sums ranges of ranges between its numbers
+In this kata, you will get an array of unique numbers, paired with strings, like
 
-  summaryRanges([1,2,3,4]) === ['1->4']
-  summaryRanges([0, 1, 2, 5, 6, 9]) === ["0->2", "5->6", "9"]
-  summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7, 20, 25]) === ["0->7", "20", "25"]
-  summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]) === ["0->7","9->10"]
+[(3, "Fizz"), (5, "Buzz"), (15, "FizzBuzz")]
+
+
+Depending on the language, 
+that's either a list/array of tuples or an array of arrays. It's always sorted.
+
+Your job is to return another function,
+that—given a number n—returns the appropriate string.
+How do you know the correct string? 
+Well, it's the one paired with the largest key that still divides the number n!
+
+
+var myFizz = fizzBuzzFactory([[3, "Fizz"], [5, "Buzz"], [15, "FizzBuzz"]])
+myFizz(3)  === "Fizz"
+myFizz(4)  === "4"
+myFizz(5)  === "Buzz"
+myFizz(15) === "FizzBuzz"
+
 */
 
-/*
-algorhytm:
+function fizzBuzzFactory(instr) {
 
-*/
+  return function (int) {
 
-function summaryRanges(data) {
-  var rawResults = [];
-
-  var rmDuplications = function rmDuplications(item, idx) {
-    return item !== data[idx + 1];
+    for (var i = instr.length - 1; i >= 0; i--) {
+      if (int % instr[i][0] === 0) return instr[i][1];
+    };
+    return "" + int;
   };
-
-  var getLinked = function getLinked(current, idx, arr) {
-    var prev = arr[idx - 1] || current;
-    var diff = current - prev;
-
-    if (diff === 1) {
-      rawResults[rawResults.length - 1] += "" + current;
-    } else {
-      rawResults.push("" + current);
-    }
-  };
-
-  var collapseLinked = function collapseLinked(item) {
-    if (item.length >= 2) {
-      return item[0] + "->" + item[item.length - 1];
-    } else {
-      return item;
-    }
-  };
-
-  data.filter(rmDuplications).forEach(getLinked);
-
-  return rawResults.map(collapseLinked);
 }
-
-// console.log(summaryRanges([]));
-// console.log(summaryRanges([1,1,1,1]));
-// console.log(summaryRanges([1,2,3,4]));
-// console.log(summaryRanges([0, 1, 2, 5, 6, 9]));
-// console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 5, 6, 7]));
-// console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7]));
-// console.log(summaryRanges([0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10]));
-// console.log(summaryRanges([-2,0, 1, 2, 3, 3, 3, 4, 4, 5, 6, 7, 7, 9, 9, 10, 12]));
 "use strict";
 
 /*My desicion*/
