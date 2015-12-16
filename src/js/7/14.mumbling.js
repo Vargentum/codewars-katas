@@ -31,7 +31,7 @@ const accum1 = (str) => {
           })
           .join('-')
 }
-console.log(accum1('aBcD'))
+// console.log(accum1('aBcD'))
 
 
 /*

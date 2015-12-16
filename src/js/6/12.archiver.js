@@ -36,10 +36,10 @@ function Archiver () {
 
 let a = new Archiver()
 
-a.temperature = 20
-a.temperature = 30
-console.log(a.temperature)
-console.log(a.getArchive())
+// a.temperature = 20
+// a.temperature = 30
+// console.log(a.temperature)
+// console.log(a.getArchive())
 
 
 /*
