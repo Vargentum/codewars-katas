@@ -30,5 +30,5 @@ function groupAnagrams(words){
   return res
 }
 
-console.log(groupAnagrams(["rat", "tar", "star"]))
-console.log(groupAnagrams(["tsar", "rat", "tar", "star", "tars", "cheese"]).toString())
+// console.log(groupAnagrams(["rat", "tar", "star"]))
+// console.log(groupAnagrams(["tsar", "rat", "tar", "star", "tars", "cheese"]))
