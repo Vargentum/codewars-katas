@@ -44,7 +44,7 @@ class Universe {
   _mapCells(fn) {
     return _.map(this.fields, (row, rowIndex) => {
       return _.map(row, (cell, cellIndex) => {
-        return fn(rowIndex, cellIndex)
+        return fn(rowIndex, cellIndex, cell)
       })
     })
   } 
@@ -60,9 +60,16 @@ class Universe {
                 .value()
   }
 
+  _startGen(size) {
+    return _.map(new Array(size),
+                 () => _.map(new Array(size), 
+                  () => _.random(0, 1)))
+  }
+
+
   constructor(size) {
-    this.fields = this.startGen(size)
-    this.size = size
+    this.fields = this._startGen(size)
+    console.log(this)
   }
 
   toString() {
@@ -71,25 +78,26 @@ class Universe {
             .join('\n')
   }
 
-  startGen(size) {
-    return _.map(new Array(size),
-                 () => _.map(new Array(size), 
-                  () => _.random(0, 1)))
-  }
-
+  
   nextGen() {
     this.fields = this._mapCells(
-      (ri, ci) => {
-        let aliveNeibours = this._getNeiboursOf(ri, ci).length - 1
-        return aliveNeibours === 3 ? 1 : 0
+      (ri, ci, cell) => {
+        let aliveNeibours = this._getNeiboursOf(ri, ci).length
+        switch(cell){
+          case 1: 
+            return aliveNeibours === 3 || aliveNeibours === 2 ? 1 : 0
+          case 0: 
+            return aliveNeibours === 3 ? 1 : 0
+        }
       }
     )
+    return this
   }
 }
 
-let a = new Universe(10)
+let a = new Universe(20)
 console.log(a.toString())
-for (var i = 0; i < 2; i++) {
-  a.nextGen()
+for (let i = 0; i < 10; i++) {
+  console.log(`------- generation: ${i+1}`)
+  console.log(a.nextGen().toString())
 };
-console.log(a.toString())

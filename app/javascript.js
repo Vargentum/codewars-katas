@@ -42,6 +42,124 @@ constructor with it arguments
 // console.log( john.introduce() ); // My name is John and I am 30
 // console.log( jack.introduce() ); // My name is Jack and I am 40
 "use strict";
+"use strict";
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*
+The universe of the Game of Life is an infinite two-dimensional orthogonal grid of square cells,
+each of which is in one of two possible states, alive or dead. 
+
+Every cell interacts with its eight neighbours, which are the cells that are horizontally, 
+vertically, or diagonally adjacent. At each step in time, the following transitions occur:
+
+  - Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+  - Any live cell with two or three live neighbours lives on to the next generation.
+  - Any live cell with more than three live neighbours dies, as if by overcrowding.
+  - Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+
+
+..implement your own method which will take the
+initial state as an NxM array of 0's (dead cell) and 1's (living cell)
+and return an equally sized array representing the next generation.
+Cells outside the array must be considered dead.
+
+Cells that would born out of the array boundaries should be ignored (universe never grows beyond the initial NxM grid).
+
+N.B.: for illustration purposes, 0 and 1 will 
+be represented as ░ and ▓ blocks respectively.
+
+You can take advantage of the 'htmlize' function to get a text representation of the universe:
+eg:
+
+
+
+Implement: 
+  getNeibours method
+  rules:
+    dead rule 1
+    dead rule 2
+    live rule
+    resurrect rule
+
+  apply rule for each cell
+    - check neibours
+*/
+
+var Universe = (function () {
+  _createClass(Universe, [{
+    key: "_mapCells",
+    value: function _mapCells(fn) {
+      return _.map(this.fields, function (row, rowIndex) {
+        return _.map(row, function (cell, cellIndex) {
+          return fn(rowIndex, cellIndex, cell);
+        });
+      });
+    }
+  }, {
+    key: "_getNeiboursOf",
+    value: function _getNeiboursOf(ri, ci) {
+      var topNeibours = _.slice(this.fields[ri - 1], ci - 1, ci + 1);
+      var btmNeibours = _.slice(this.fields[ri + 1], ci - 1, ci + 1);
+      var crtNeibours = [this.fields[ri][ci - 1], this.fields[ri][ci + 1]];
+
+      return _([]).push(topNeibours, crtNeibours, btmNeibours).flatten().compact().value();
+    }
+  }, {
+    key: "_startGen",
+    value: function _startGen(size) {
+      return _.map(new Array(size), function () {
+        return _.map(new Array(size), function () {
+          return _.random(0, 1);
+        });
+      });
+    }
+  }]);
+
+  function Universe(size) {
+    _classCallCheck(this, Universe);
+
+    this.fields = this._startGen(size);
+    console.log(this);
+  }
+
+  _createClass(Universe, [{
+    key: "toString",
+    value: function toString() {
+      return _(this.fields).map(function (f) {
+        return f.join(" ");
+      }).join('\n');
+    }
+  }, {
+    key: "nextGen",
+    value: function nextGen() {
+      var _this = this;
+
+      this.fields = this._mapCells(function (ri, ci, cell) {
+        var aliveNeibours = _this._getNeiboursOf(ri, ci).length;
+        switch (cell) {
+          case 1:
+            return aliveNeibours === 3 || aliveNeibours === 2 ? 1 : 0;
+          case 0:
+            return aliveNeibours === 3 ? 1 : 0;
+        }
+      });
+      return this;
+    }
+  }]);
+
+  return Universe;
+})();
+
+var a = new Universe(20);
+console.log(a.toString());
+for (var i = 0; i < 10; i++) {
+  console.log("------- generation: " + (i + 1));
+  console.log(a.nextGen().toString());
+};
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {
@@ -760,15 +878,51 @@ Array.prototype.groupBy = function (fn) {
   }, {});
 };
 
-console.log([1, 2, 3, 2, 4, 1, 5, 1, 6].groupBy());
-console.log([1, 2, 3, 2, 4, 1, 5, 1, 6].groupBy(function (val) {
-  return val % 3;
-}));
+// console.log([1,2,3,2,4,1,5,1,6].groupBy())
+// console.log([1,2,3,2,4,1,5,1,6].groupBy(function(val) { return val % 3;} ))
 
 /*Enlightment:
   
 
 */
+'use strict';
+
+/*
+Find a way to group anagrams in provided array
+
+// input
+groupAnagrams(["tsar", "rat", "tar", "star", "tars", "cheese"]);
+
+// output
+[
+  ["tsar", "star", "tars"],
+  ["rat", "tar"],
+  ["cheese"]
+]
+
+map, then compare x
+  add x to sub-array
+  rearrange x, compare with all others from array (rearranged to)
+  if true - remove corresponding item from array
+            add to x sub-array
+*/
+
+function groupAnagrams(words) {
+  var equalize = function equalize(i) {
+    return i.toLowerCase().split('').sort().join();
+  };
+  var res = [];
+
+  while (words.length > 0) {
+    res.push(_.remove(words, function (y) {
+      return equalize(words[0]) === equalize(y);
+    }));
+  }
+  return res;
+}
+
+// console.log(groupAnagrams(["rat", "tar", "star"]))
+// console.log(groupAnagrams(["tsar", "rat", "tar", "star", "tars", "cheese"]))
 "use strict";
 
 /*My desicion*/
