@@ -25,12 +25,12 @@ gulp.task 'coffee', ->
 gulp.task 'javascript', ->
   gulp.src './src/**/*.js'
     .pipe($.plumber())
-    .pipe($.jshint(
-      eqeqeq: on
-      esnext: on
-      curly: on
-      asi: on  # disable semicolons varning
-    ))
+    # .pipe($.jshint(
+    #   eqeqeq: on
+    #   esnext: on
+    #   curly: on
+    #   asi: on  # disable semicolons varning
+    # ))
     .pipe($.jshint.reporter(jshintStylish))
     # .pipe($.sourcemaps.init())
     .pipe($.babel(
