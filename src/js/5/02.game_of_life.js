@@ -95,9 +95,9 @@ class Universe {
   }
 }
 
-let a = new Universe(20)
-console.log(a.toString())
-for (let i = 0; i < 10; i++) {
-  console.log(`------- generation: ${i+1}`)
-  console.log(a.nextGen().toString())
-};
+// let a = new Universe(20)
+// console.log(a.toString())
+// for (let i = 0; i < 10; i++) {
+//   console.log(`------- generation: ${i+1}`)
+//   console.log(a.nextGen().toString())
+// };
