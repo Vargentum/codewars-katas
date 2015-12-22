@@ -29,12 +29,12 @@ function toUnderscore(str) {
   return result.join("")
 }
 
-console.log(toUnderscore('CamelCasedString'))
-console.log(toUnderscore('CamelCasedString'))
-console.log(toUnderscore('CamelCasedString'))
-console.log(toUnderscore('CamelCasedString'))
-console.log(toUnderscore('coFAFdfs134'))
-console.log(toUnderscore(12))
+// console.log(toUnderscore('CamelCasedString'))
+// console.log(toUnderscore('CamelCasedString'))
+// console.log(toUnderscore('CamelCasedString'))
+// console.log(toUnderscore('CamelCasedString'))
+// console.log(toUnderscore('coFAFdfs134'))
+// console.log(toUnderscore(12))
 
 
 /*Enlighten:
@@ -43,5 +43,5 @@ console.log(toUnderscore(12))
   - use pattern ?= to find all letters except first one
 */
 function toUnderscoreBetter(str) {
-  return str.toString().split(/(?=[A-Z])/).join('_').toLowerCase()
+  return str.toString().split(/(?=[A-Z])/).join('_').toLowerCase()  
 }
