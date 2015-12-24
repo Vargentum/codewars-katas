@@ -1,3 +1,5 @@
+'use strict';
+
 /*
 Your mission: write a function nouveau 
 (that's French for "new") which takes
@@ -21,27 +23,33 @@ constructor with it arguments
 4. If no - Evalueate to instance
 */
 
-// function nouveau (Constructor, ...args) {
-//   let res = {}
-//   res.setPrototype(Constructor.prototype)
-//   res = Constructor.apply(res, args)
-//   return res;
-// }
+function nouveau(Constructor) {
+  // let inst = {}
+  // inst.__proto__ = Constructor.prototype
+  var inst = Object.create(Constructor.prototype);
 
-// function Person (name, age) {
-//   this.name = name;
-//   this.age = age;
-// }
-// Person.prototype.introduce = function(){
-//   return 'My name is ' + this.name + ' and I am ' + this.age;
-// };
+  for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    args[_key - 1] = arguments[_key];
+  }
 
-// var jack = new Person('Jack', 40);
-// var john = nouveau(Person, 'John', 30); // same result as above
+  var rInst = Constructor.apply(inst, args);
+  return _.isObject(rInst) ? rInst : inst;
+}
 
-// console.log( john.introduce() ); // My name is John and I am 30
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  return 'test';
+}
+Person.prototype.introduce = function () {
+  return 'My name is ' + this.name + ' and I am ' + this.age;
+};
+
+var jack = new Person('Jack', 40);
+var john = nouveau(Person, 'John', 30); // same result as above
+
 // console.log( jack.introduce() ); // My name is Jack and I am 40
-"use strict";
+// console.log( john.introduce() ); // My name is John and I am 30
 "use strict";
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -238,6 +246,50 @@ Math.round = function (number) {
 /*
 Find a better way with parseInt()
 
+*/
+"use strict";
+
+/*
+
+Functional programming thrives from the reuse of functions.
+One core feature to extend the reuse is the concatenation of functions.
+
+
+Build a function pipe to achieve this with JS. An example use could be:
+
+  must return a function (to concating work) (1)
+  return a result (2)
+
+
+  Enlightment: return function (1) that return a result (2) !!!
+*/
+
+function task() {
+  var addOne = function addOne(e) {
+    return e + 1;
+  };
+  var square = function square(e) {
+    return e * e;
+  };
+
+  Function.prototype.pipe = function (fn) {
+    var _this = this;
+
+    return function (arg) {
+      return fn(_this(arg));
+    };
+  };
+
+  var result = [1, 2, 3, 4, 5].map(addOne.pipe(addOne).pipe(addOne).pipe(addOne));
+  console.log(result);
+}
+task();
+
+/*
+  Tips:
+
+    - use arrow function as in decision
+    - or `bind` wrapper function to pass correct `this`
 */
 'use strict';
 
