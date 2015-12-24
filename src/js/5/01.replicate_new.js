@@ -22,27 +22,27 @@ constructor with it arguments
 */
 
 
-// function nouveau (Constructor, ...args) {
-//   let res = {}
-//   res.setPrototype(Constructor.prototype)
-//   res = Constructor.apply(res, args)
-//   return res;
-// }
+function nouveau (Constructor, ...args) {
+  // let inst = {}
+  // inst.__proto__ = Constructor.prototype
+  let inst = Object.create(Constructor.prototype)
+  let rInst = Constructor.apply(inst, args)
+  return _.isObject(rInst) ? rInst : inst;
+}
 
 
-// function Person (name, age) {
-//   this.name = name;
-//   this.age = age;
-// }
-// Person.prototype.introduce = function(){
-//   return 'My name is ' + this.name + ' and I am ' + this.age;
-// };
+function Person (name, age) {
+  this.name = name;
+  this.age = age;
+  return 'test'
+}
+Person.prototype.introduce = function(){
+  return 'My name is ' + this.name + ' and I am ' + this.age;
+};
 
 
-// var jack = new Person('Jack', 40);
-// var john = nouveau(Person, 'John', 30); // same result as above
+var jack = new Person('Jack', 40);
+var john = nouveau(Person, 'John', 30); // same result as above
 
-// console.log( john.introduce() ); // My name is John and I am 30
 // console.log( jack.introduce() ); // My name is Jack and I am 40
-
-
+// console.log( john.introduce() ); // My name is John and I am 30
