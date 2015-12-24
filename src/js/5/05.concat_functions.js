@@ -31,7 +31,7 @@ function task () {
                                      .pipe(addOne))
   console.log(result)
 }
-task()
+// task()
 
 /*
   Tips:
