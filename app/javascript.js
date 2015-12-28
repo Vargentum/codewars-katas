@@ -1,6 +1,48 @@
 'use strict';
 
 /*
+Write a function defaultArguments. 
+It takes a function as an argument, along with an object containing
+default values for that function's arguments, and returns another function which defaults to the right values.
+
+You cannot assume that the function's arguments have any particular names.
+
+You should be able to call defaultArguments repeatedly to change the defaults. (PROBLEM WITH THIS)
+
+*/
+function task402() {
+
+  var defaultArguments = function defaultArguments(func, params) {
+    var defaults = func.toString().match(/\((.*?)\)/)[1].split(', ').map(function (n) {
+      return params[n];
+    });
+
+    return function () {
+      var args = [];
+      for (var i = 0; i < defaults.length; i++) {
+        args.push(arguments[i] || defaults[i]);
+      };
+      return func.apply(this, args);
+    };
+  };
+
+  var add = function add(a, b) {
+    return a + b;
+  };
+
+  var add_ = defaultArguments(add, { b: 9 });
+  console.log(add_(10)); // returns 19
+  console.log(add_(10, 7)); // returns 17
+  console.log(add_()); // returns NaN
+
+  add_ = defaultArguments(add_, { b: 3, a: 2 });
+  console.log(add_(10)); // returns 13 now
+  console.log(add_()); // returns 5
+}
+// task402()
+'use strict';
+
+/*
 Your mission: write a function nouveau 
 (that's French for "new") which takes
 one function parameter (the constructor), 
@@ -298,7 +340,7 @@ Create a function method that allow you to wrap an existing function.
 The method signature would look something like this:
 */
 
-function task() {
+function task506() {
 
    Function.prototype.wrap = function (wrapper) {
       return wrapper.bind(this, this);
@@ -316,7 +358,85 @@ function task() {
    var greeting = speak("Mary", "Kate");
    console.log(greeting);
 }
-task();
+// task506()
+"use strict";
+
+/*
+or this kata, implement a spyOn function which takes any function func as a parameter 
+and returns a spy for func. The returned spy must be callable in the same manner 
+as the original func, and include the following additional properties/methods:
+
+.callCount() — returns the number of times spy has been called
+.wasCalledWith(val) – returns true if spy was called with val, else returns false.
+.returned(val) — returns true if spy returned val, else returns false
+
+Below is a specific example of how spyOn might work in the wild.
+
+function adder(n1, n2) { return n1 + n2; }
+var adderSpy = spyOn( adder );
+
+adderSpy(2, 4); // returns 6
+adderSpy(3, 5); // returns 8
+adderSpy.callCount(); // returns 2
+adderSpy.wasCalledWith(4); // true
+adderSpy.wasCalledWith(0); // false
+adderSpy.returned(8); // true
+adderSpy.returned(0); // false
+
+
+Algo: 
+  return constructor?
+         object?
+         function? +
+
+*/
+
+function task507() {
+
+  function spyOn(func) {
+    var count = 0;
+    var spyArgs = [];
+    var result = undefined;
+
+    var spied = function spied() {
+      count++;
+
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+
+      spyArgs.push.apply(spyArgs, args);
+      result = func.apply(this, args);
+      return result;
+    };
+    spied.callCount = function () {
+      return count;
+    };
+    spied.wasCalledWith = function (arg) {
+      return spyArgs.some(function (a) {
+        return arg === a;
+      });
+    };
+    spied.returned = function (res) {
+      return result === res;
+    };
+    return spied;
+  }
+
+  function adder(n1, n2) {
+    return n1 + n2;
+  }
+  var adderSpy = spyOn(adder);
+
+  console.log(adderSpy(2, 4)); // returns 6
+  console.log(adderSpy(3, 5)); // returns 8
+  console.log(adderSpy.callCount()); // returns 2
+  console.log(adderSpy.wasCalledWith(4)); // true
+  console.log(adderSpy.wasCalledWith(0)); // false
+  console.log(adderSpy.returned(8)); // true
+  console.log(adderSpy.returned(0)); // false
+}
+task507();
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {
