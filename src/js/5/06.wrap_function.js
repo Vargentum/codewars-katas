@@ -3,7 +3,7 @@ Create a function method that allow you to wrap an existing function.
 The method signature would look something like this:
 */
 
-function task () {
+function task506 () {
 
 
   Function.prototype.wrap = function(wrapper) {
@@ -25,4 +25,4 @@ function task () {
   var greeting = speak("Mary", "Kate")
   console.log(greeting)
 }
-task()
+// task506()
