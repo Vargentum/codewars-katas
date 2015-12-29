@@ -40,6 +40,42 @@ function task402() {
   console.log(add_()); // returns 5
 }
 // task402()
+"use strict";
+
+/*
+
+Complete the solution so that it strips all text 
+that follows any of a set of comment markers passed in. 
+
+Any whitespace at the end of the line should also be stripped out.
+
+
+
+Algo:
+  - construct dynamic Regexp
+
+
+Enlightment:
+  - use RegExp Constructor to make dynamic regex
+  - use \ to escape user input characters inside alteration (\$\!) 
+    - if in constructor, also use \\
+  - use \\ to escape `special characters` in Constructor (\s => \\s)
+ 
+*/
+
+function task403() {
+
+  var solution = function solution(input, markers) {
+    var markersStr = markers.reduce(function (str, mk) {
+      return str += "|\\" + mk;
+    }, "").substring(1);
+    var ptrn = new RegExp("\\s*?(" + markersStr + ")[^\n]*", 'g');
+    return input.replace(ptrn, "");
+  };
+
+  console.log(solution("apples, pears # and bananas\ngrapes\nbananas !apples", ["#", "!"]));
+}
+task403();
 'use strict';
 
 /*
@@ -436,7 +472,7 @@ function task507() {
   console.log(adderSpy.returned(8)); // true
   console.log(adderSpy.returned(0)); // false
 }
-task507();
+// task507()
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {

@@ -63,4 +63,4 @@ function task507 () {
   console.log(adderSpy.returned(0)); // false
 
 }
-task507()
+// task507()
