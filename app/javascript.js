@@ -75,7 +75,186 @@ function task403() {
 
   console.log(solution("apples, pears # and bananas\ngrapes\nbananas !apples", ["#", "!"]));
 }
-task403();
+// task403()
+"use strict";
+
+/*
+
+Write a function that, given a depth (n), returns a 
+single-dimensional array representing Pascal's Triangle to the n-th level.
+
+    1
+   1 1
+  1 2 1
+ 1 3 3 1
+1 4 6 4 1
+
+Algo
+
+  generate n arrays (levels)
+  for each NOT first integer in array:
+    compare with prev array corresponding value
+    if no - return 1
+    if yes - plus with prev of corresponding
+
+
+*/
+
+function task404() {
+
+  var pascalsTriangle = function pascalsTriangle(n) {
+    var array = [];
+
+    var createLvl = function createLvl(i) {
+      var prev = array[i - 1];
+
+      return _(new Array(i + 1)).map(function (char, idx) {
+        if (!(prev && prev[idx] && prev[idx - 1])) return 1;
+        return prev[idx] + prev[idx - 1];
+      }).value();
+    };
+
+    _.times(n, function (i) {
+      array.push(createLvl(i));
+    });
+
+    return _.flatten(array);
+  };
+
+  console.log(pascalsTriangle(4));
+  console.log(pascalsTriangle(10));
+}
+task404();
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*
+
+Implement class User
+
+A user starts at rank -8 and can progress all the way to 8.
+There is no 0 (zero) rank. The next rank after -1 is 1.
+Users will complete activities. These activities also have ranks.
+Each time the user completes a ranked activity the users rank progress is updated based off of the activity's rank
+
+The progress earned from the completed activity is relative to what the user's current rank is compared to the rank of the activity
+A user's rank progress starts off at zero, each time the progress reaches 100 the user's rank is upgraded to the next level
+Any remaining progress earned while in the previous rank will be applied towards the next rank's progress (we don't throw any progress away). The exception is if there is no other rank left to progress towards (Once you reach rank 8 there is no more progression).
+A user cannot progress beyond rank 8.
+The only acceptable range of rank values is -8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8. Any other value should raise an error.
+
+The progress is scored like so:
+
+Completing an activity that is ranked the same as that of the user's will be worth 3 points
+Completing an activity that is ranked one ranking lower than the user's will be worth 1 point
+
+Any activities completed that are ranking 2 levels or more lower than the user's ranking will be ignored
+
+Completing an activity ranked higher than the current user's rank will accelerate the rank progression. 
+
+The greater the difference between rankings the more the progression will be increased. 
+The formula is 10 d d where d equals the difference in ranking between the activity and the user.
+
+var user = new User()
+user.rank // => -8
+user.progress // => 0
+user.incProgress(-7)
+user.progress // => 10
+user.incProgress(-5) // will add 90 progress
+user.progress # => 0 // progress is now zero
+user.rank # => -7 // rank was upgraded to -7
+*/
+
+function task405() {
+  var User = (function () {
+    function User() {
+      _classCallCheck(this, User);
+
+      this.rank = -8;
+      this.progress = 0;
+    }
+
+    _createClass(User, [{
+      key: '_incRank',
+      value: function _incRank() {
+        switch (this.rank) {
+          case -1:
+            this.rank + 2;
+            break;
+          case 8:
+            break;
+          default:
+            this.rank++;
+            break;
+        }
+      }
+    }, {
+      key: '_calcActivityWeight',
+      value: function _calcActivityWeight(activityRank) {
+        var diff = this.rank - activityRank;
+
+        if (activityRank > this.rank) {
+          return 10 * Math.pow(Math.abs(diff), 2);
+        }
+
+        switch (diff) {
+          case -1:
+            return 1;
+          case 0:
+            return 3;
+          default:
+            return 0;
+        }
+      }
+    }, {
+      key: '_validateRank',
+      value: function _validateRank(rank) {
+        if (!(rank < User.rank.min || rank === 0 || rank > User.rank.max)) return;
+        throw new Error('Incorrect Rank ' + rank);
+      }
+    }, {
+      key: 'incProgress',
+      value: function incProgress(activityRank) {
+        this._validateRank(activityRank);
+        var progress = this.progress + this._calcActivityWeight(activityRank);
+
+        while (progress > User.rank.capacity) {
+          this._incRank();
+
+          if (this.rank === User.rank.max) {
+            progress = 0;
+            break;
+          }
+          progress -= User.rank.capacity;
+        }
+        this.progress = progress;
+      }
+    }]);
+
+    return User;
+  })();
+
+  Object.defineProperty(User, 'rank', {
+    value: {
+      capacity: 100,
+      min: -8,
+      max: 8
+    },
+    writable: false
+  });
+
+  var me = new User();
+  console.log(me.rank);
+  me.incProgress(8);
+  me.incProgress(8);
+  me.incProgress(8);
+  me.incProgress(8);
+  console.log(me.rank);
+}
+task405();
 'use strict';
 
 /*
