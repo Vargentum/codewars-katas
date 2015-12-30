@@ -1,263 +1,6 @@
 'use strict';
 
 /*
-Write a function defaultArguments. 
-It takes a function as an argument, along with an object containing
-default values for that function's arguments, and returns another function which defaults to the right values.
-
-You cannot assume that the function's arguments have any particular names.
-
-You should be able to call defaultArguments repeatedly to change the defaults. (PROBLEM WITH THIS)
-
-*/
-function task402() {
-
-  var defaultArguments = function defaultArguments(func, params) {
-    var defaults = func.toString().match(/\((.*?)\)/)[1].split(', ').map(function (n) {
-      return params[n];
-    });
-
-    return function () {
-      var args = [];
-      for (var i = 0; i < defaults.length; i++) {
-        args.push(arguments[i] || defaults[i]);
-      };
-      return func.apply(this, args);
-    };
-  };
-
-  var add = function add(a, b) {
-    return a + b;
-  };
-
-  var add_ = defaultArguments(add, { b: 9 });
-  console.log(add_(10)); // returns 19
-  console.log(add_(10, 7)); // returns 17
-  console.log(add_()); // returns NaN
-
-  add_ = defaultArguments(add_, { b: 3, a: 2 });
-  console.log(add_(10)); // returns 13 now
-  console.log(add_()); // returns 5
-}
-// task402()
-"use strict";
-
-/*
-
-Complete the solution so that it strips all text 
-that follows any of a set of comment markers passed in. 
-
-Any whitespace at the end of the line should also be stripped out.
-
-
-
-Algo:
-  - construct dynamic Regexp
-
-
-Enlightment:
-  - use RegExp Constructor to make dynamic regex
-  - use \ to escape user input characters inside alteration (\$\!) 
-    - if in constructor, also use \\
-  - use \\ to escape `special characters` in Constructor (\s => \\s)
- 
-*/
-
-function task403() {
-
-  var solution = function solution(input, markers) {
-    var markersStr = markers.reduce(function (str, mk) {
-      return str += "|\\" + mk;
-    }, "").substring(1);
-    var ptrn = new RegExp("\\s*?(" + markersStr + ")[^\n]*", 'g');
-    return input.replace(ptrn, "");
-  };
-
-  console.log(solution("apples, pears # and bananas\ngrapes\nbananas !apples", ["#", "!"]));
-}
-// task403()
-"use strict";
-
-/*
-
-Write a function that, given a depth (n), returns a 
-single-dimensional array representing Pascal's Triangle to the n-th level.
-
-    1
-   1 1
-  1 2 1
- 1 3 3 1
-1 4 6 4 1
-
-Algo
-
-  generate n arrays (levels)
-  for each NOT first integer in array:
-    compare with prev array corresponding value
-    if no - return 1
-    if yes - plus with prev of corresponding
-
-
-*/
-
-function task404() {
-
-  var pascalsTriangle = function pascalsTriangle(n) {
-    var array = [];
-
-    var createLvl = function createLvl(i) {
-      var prev = array[i - 1];
-
-      return _(new Array(i + 1)).map(function (char, idx) {
-        if (!(prev && prev[idx] && prev[idx - 1])) return 1;
-        return prev[idx] + prev[idx - 1];
-      }).value();
-    };
-
-    _.times(n, function (i) {
-      array.push(createLvl(i));
-    });
-
-    return _.flatten(array);
-  };
-
-  console.log(pascalsTriangle(4));
-  console.log(pascalsTriangle(10));
-}
-task404();
-'use strict';
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/*
-
-Implement class User
-
-A user starts at rank -8 and can progress all the way to 8.
-There is no 0 (zero) rank. The next rank after -1 is 1.
-Users will complete activities. These activities also have ranks.
-Each time the user completes a ranked activity the users rank progress is updated based off of the activity's rank
-
-The progress earned from the completed activity is relative to what the user's current rank is compared to the rank of the activity
-A user's rank progress starts off at zero, each time the progress reaches 100 the user's rank is upgraded to the next level
-Any remaining progress earned while in the previous rank will be applied towards the next rank's progress (we don't throw any progress away). The exception is if there is no other rank left to progress towards (Once you reach rank 8 there is no more progression).
-A user cannot progress beyond rank 8.
-The only acceptable range of rank values is -8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8. Any other value should raise an error.
-
-The progress is scored like so:
-
-Completing an activity that is ranked the same as that of the user's will be worth 3 points
-Completing an activity that is ranked one ranking lower than the user's will be worth 1 point
-
-Any activities completed that are ranking 2 levels or more lower than the user's ranking will be ignored
-
-Completing an activity ranked higher than the current user's rank will accelerate the rank progression. 
-
-The greater the difference between rankings the more the progression will be increased. 
-The formula is 10 d d where d equals the difference in ranking between the activity and the user.
-
-var user = new User()
-user.rank // => -8
-user.progress // => 0
-user.incProgress(-7)
-user.progress // => 10
-user.incProgress(-5) // will add 90 progress
-user.progress # => 0 // progress is now zero
-user.rank # => -7 // rank was upgraded to -7
-*/
-
-function task405() {
-  var User = (function () {
-    function User() {
-      _classCallCheck(this, User);
-
-      this.rank = -8;
-      this.progress = 0;
-    }
-
-    _createClass(User, [{
-      key: '_incRank',
-      value: function _incRank() {
-        switch (this.rank) {
-          case -1:
-            this.rank + 2;
-            break;
-          case 8:
-            break;
-          default:
-            this.rank++;
-            break;
-        }
-      }
-    }, {
-      key: '_calcActivityWeight',
-      value: function _calcActivityWeight(activityRank) {
-        var diff = this.rank - activityRank;
-
-        if (activityRank > this.rank) {
-          return 10 * Math.pow(Math.abs(diff), 2);
-        }
-
-        switch (diff) {
-          case -1:
-            return 1;
-          case 0:
-            return 3;
-          default:
-            return 0;
-        }
-      }
-    }, {
-      key: '_validateRank',
-      value: function _validateRank(rank) {
-        if (!(rank < User.rank.min || rank === 0 || rank > User.rank.max)) return;
-        throw new Error('Incorrect Rank ' + rank);
-      }
-    }, {
-      key: 'incProgress',
-      value: function incProgress(activityRank) {
-        this._validateRank(activityRank);
-        var progress = this.progress + this._calcActivityWeight(activityRank);
-
-        while (progress > User.rank.capacity) {
-          this._incRank();
-
-          if (this.rank === User.rank.max) {
-            progress = 0;
-            break;
-          }
-          progress -= User.rank.capacity;
-        }
-        this.progress = progress;
-      }
-    }]);
-
-    return User;
-  })();
-
-  Object.defineProperty(User, 'rank', {
-    value: {
-      capacity: 100,
-      min: -8,
-      max: 8
-    },
-    writable: false
-  });
-
-  var me = new User();
-  console.log(me.rank);
-  me.incProgress(8);
-  me.incProgress(8);
-  me.incProgress(8);
-  me.incProgress(8);
-  console.log(me.rank);
-}
-task405();
-'use strict';
-
-/*
 Your mission: write a function nouveau 
 (that's French for "new") which takes
 one function parameter (the constructor), 
@@ -652,6 +395,263 @@ function task507() {
   console.log(adderSpy.returned(0)); // false
 }
 // task507()
+'use strict';
+
+/*
+Write a function defaultArguments. 
+It takes a function as an argument, along with an object containing
+default values for that function's arguments, and returns another function which defaults to the right values.
+
+You cannot assume that the function's arguments have any particular names.
+
+You should be able to call defaultArguments repeatedly to change the defaults. (PROBLEM WITH THIS)
+
+*/
+function task402() {
+
+  var defaultArguments = function defaultArguments(func, params) {
+    var defaults = func.toString().match(/\((.*?)\)/)[1].split(', ').map(function (n) {
+      return params[n];
+    });
+
+    return function () {
+      var args = [];
+      for (var i = 0; i < defaults.length; i++) {
+        args.push(arguments[i] || defaults[i]);
+      };
+      return func.apply(this, args);
+    };
+  };
+
+  var add = function add(a, b) {
+    return a + b;
+  };
+
+  var add_ = defaultArguments(add, { b: 9 });
+  console.log(add_(10)); // returns 19
+  console.log(add_(10, 7)); // returns 17
+  console.log(add_()); // returns NaN
+
+  add_ = defaultArguments(add_, { b: 3, a: 2 });
+  console.log(add_(10)); // returns 13 now
+  console.log(add_()); // returns 5
+}
+// task402()
+"use strict";
+
+/*
+
+Complete the solution so that it strips all text 
+that follows any of a set of comment markers passed in. 
+
+Any whitespace at the end of the line should also be stripped out.
+
+
+
+Algo:
+  - construct dynamic Regexp
+
+
+Enlightment:
+  - use RegExp Constructor to make dynamic regex
+  - use \ to escape user input characters inside alteration (\$\!) 
+    - if in constructor, also use \\
+  - use \\ to escape `special characters` in Constructor (\s => \\s)
+ 
+*/
+
+function task403() {
+
+  var solution = function solution(input, markers) {
+    var markersStr = markers.reduce(function (str, mk) {
+      return str += "|\\" + mk;
+    }, "").substring(1);
+    var ptrn = new RegExp("\\s*?(" + markersStr + ")[^\n]*", 'g');
+    return input.replace(ptrn, "");
+  };
+
+  console.log(solution("apples, pears # and bananas\ngrapes\nbananas !apples", ["#", "!"]));
+}
+// task403()
+"use strict";
+
+/*
+
+Write a function that, given a depth (n), returns a 
+single-dimensional array representing Pascal's Triangle to the n-th level.
+
+    1
+   1 1
+  1 2 1
+ 1 3 3 1
+1 4 6 4 1
+
+Algo
+
+  generate n arrays (levels)
+  for each NOT first integer in array:
+    compare with prev array corresponding value
+    if no - return 1
+    if yes - plus with prev of corresponding
+
+
+*/
+
+function task404() {
+
+  var pascalsTriangle = function pascalsTriangle(n) {
+    var array = [];
+
+    var createLvl = function createLvl(i) {
+      var prev = array[i - 1];
+
+      return _(new Array(i + 1)).map(function (char, idx) {
+        if (!(prev && prev[idx] && prev[idx - 1])) return 1;
+        return prev[idx] + prev[idx - 1];
+      }).value();
+    };
+
+    _.times(n, function (i) {
+      array.push(createLvl(i));
+    });
+
+    return _.flatten(array);
+  };
+
+  console.log(pascalsTriangle(4));
+  console.log(pascalsTriangle(10));
+}
+// task404()
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*
+
+Implement class User
+
+A user starts at rank -8 and can progress all the way to 8.
+There is no 0 (zero) rank. The next rank after -1 is 1.
+Users will complete activities. These activities also have ranks.
+Each time the user completes a ranked activity the users rank progress is updated based off of the activity's rank
+
+The progress earned from the completed activity is relative to what the user's current rank is compared to the rank of the activity
+A user's rank progress starts off at zero, each time the progress reaches 100 the user's rank is upgraded to the next level
+Any remaining progress earned while in the previous rank will be applied towards the next rank's progress (we don't throw any progress away). The exception is if there is no other rank left to progress towards (Once you reach rank 8 there is no more progression).
+A user cannot progress beyond rank 8.
+The only acceptable range of rank values is -8,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7,8. Any other value should raise an error.
+
+The progress is scored like so:
+
+Completing an activity that is ranked the same as that of the user's will be worth 3 points
+Completing an activity that is ranked one ranking lower than the user's will be worth 1 point
+
+Any activities completed that are ranking 2 levels or more lower than the user's ranking will be ignored
+
+Completing an activity ranked higher than the current user's rank will accelerate the rank progression. 
+
+The greater the difference between rankings the more the progression will be increased. 
+The formula is 10 d d where d equals the difference in ranking between the activity and the user.
+
+var user = new User()
+user.rank // => -8
+user.progress // => 0
+user.incProgress(-7)
+user.progress // => 10
+user.incProgress(-5) // will add 90 progress
+user.progress # => 0 // progress is now zero
+user.rank # => -7 // rank was upgraded to -7
+*/
+
+function task405() {
+  var User = (function () {
+    function User() {
+      _classCallCheck(this, User);
+
+      this.rank = -8;
+      this.progress = 0;
+    }
+
+    _createClass(User, [{
+      key: '_incRank',
+      value: function _incRank() {
+        switch (this.rank) {
+          case -1:
+            this.rank + 2;
+            break;
+          case 8:
+            break;
+          default:
+            this.rank++;
+            break;
+        }
+      }
+    }, {
+      key: '_calcActivityWeight',
+      value: function _calcActivityWeight(activityRank) {
+        var diff = this.rank - activityRank;
+
+        if (activityRank > this.rank) {
+          return 10 * Math.pow(Math.abs(diff), 2);
+        }
+
+        switch (diff) {
+          case -1:
+            return 1;
+          case 0:
+            return 3;
+          default:
+            return 0;
+        }
+      }
+    }, {
+      key: '_validateRank',
+      value: function _validateRank(rank) {
+        if (!(rank < User.rank.min || rank === 0 || rank > User.rank.max)) return;
+        throw new Error('Incorrect Rank ' + rank);
+      }
+    }, {
+      key: 'incProgress',
+      value: function incProgress(activityRank) {
+        this._validateRank(activityRank);
+        var progress = this.progress + this._calcActivityWeight(activityRank);
+
+        while (progress > User.rank.capacity) {
+          this._incRank();
+
+          if (this.rank === User.rank.max) {
+            progress = 0;
+            break;
+          }
+          progress -= User.rank.capacity;
+        }
+        this.progress = progress;
+      }
+    }]);
+
+    return User;
+  })();
+
+  Object.defineProperty(User, 'rank', {
+    value: {
+      capacity: 100,
+      min: -8,
+      max: 8
+    },
+    writable: false
+  });
+
+  var me = new User();
+  console.log(me.rank);
+  me.incProgress(8);
+  me.incProgress(8);
+  me.incProgress(8);
+  me.incProgress(8);
+  console.log(me.rank);
+}
+task405();
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {
