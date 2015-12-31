@@ -50,10 +50,8 @@ function task405 () {
     _incRank() {
       switch(this.rank){
         case -1:
-          this.rank + 2
+          this.rank += 2
           break;
-        case 8:
-          break
         default:
           this.rank++
           break;
@@ -61,12 +59,18 @@ function task405 () {
     }
 
     _calcActivityWeight(activityRank) {
-      let diff = this.rank - activityRank
-
+      let diff = activityRank - this.rank
+      
+      // remove `zero` rank
+      if (activityRank > 0 && this.rank < 0) diff--
+      else if (activityRank < 0 && this.rank > 0) diff++
+      
+      // increased points
       if (activityRank > this.rank) {
         return 10 * Math.pow(Math.abs(diff), 2)
       }
 
+      //default points
       switch (diff) {
         case -1: return 1
         case 0:  return 3
@@ -82,17 +86,16 @@ function task405 () {
     incProgress(activityRank) {
       this._validateRank(activityRank)
       let progress = this.progress + this._calcActivityWeight(activityRank)
-
-      while(progress > User.rank.capacity){
-        this._incRank()
-
+      while(progress >= User.rank.capacity){
         if (this.rank === User.rank.max) {
           progress = 0
           break
         }
+        this._incRank()
         progress -= User.rank.capacity
       }
-      this.progress = progress
+      this.progress = this.rank === User.rank.max ? 0 : progress
+      console.log(`task: ${activityRank}, rank: ${this.rank}, weight: ${this._calcActivityWeight(activityRank)}, progress: ${this.progress}`)
     }
   }
 
@@ -106,12 +109,40 @@ function task405 () {
   })
 
 
-  let me = new User()
-  console.log(me.rank)
-  me.incProgress(8)
-  me.incProgress(8)
-  me.incProgress(8)
-  me.incProgress(8)
-  console.log(me.rank)
+  let user = new User()
+  
+  user.incProgress(8) 
+  user.incProgress(8) 
+  user.incProgress(8) 
+  user.incProgress(8) 
+
+  /*
+
+    After applying rank of -8 the progress was expected to be 3, but was actually 99
+    After applying rank of -7 the progress was expected to be 10, but was actually 99
+    After applying rank of -6 the progress was expected to be 40, but was actually 99
+    After applying rank of -5 the progress was expected to be 90, but was actually 99
+    After applying rank of -4 the progress was expected to be 60, but was actually 99
+    After applying rank of -8 the progress was expected to be 3, but was actually 99
+    After applying rank of 1 the progress was expected to be 40, but was actually 99
+    After applying rank of 1 the progress was expected to be 80, but was actually 0
+    After applying rank of 1 the progress was expected to be 20, but was actually 0
+    After applying rank of 1 the progress was expected to be 30, but was actually 0
+    After applying rank of 1 the progress was expected to be 40, but was actually 0
+    After applying rank of 2 the progress was expected to be 80, but was actually 0
+    After applying rank of 2 the progress was expected to be 20, but was actually 0
+    After applying rank of -1 the progress was expected to be 21, but was actually 0
+    After applying rank of 3 the progress was expected to be 61, but was actually 0
+    After applying rank of 8 the progress was expected to be 51, but was actually 0
+    After applying rank of 8 the progress was expected to be 91, but was actually 0
+    After applying rank of 8 the progress was expected to be 31, but was actually 0
+    After applying rank of 8 the progress was expected to be 41, but was actually 0
+    After applying rank of 8 the progress was expected to be 51, but was actually 0
+    After applying rank of 8 the progress was expected to be 61, but was actually 0
+    After applying rank of 8 the progress was expected to be 71, but was actually 0
+    After applying rank of 8 the progress was expected to be 81, but was actually 0
+    After applying rank of 8 the progress was expected to be 91, but was actually 0
+  */
+
 }
 task405()
