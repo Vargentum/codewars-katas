@@ -86,6 +86,7 @@ function task405 () {
     incProgress(activityRank) {
       this._validateRank(activityRank)
       let progress = this.progress + this._calcActivityWeight(activityRank)
+      
       while(progress >= User.rank.capacity){
         if (this.rank === User.rank.max) {
           progress = 0
@@ -95,7 +96,6 @@ function task405 () {
         progress -= User.rank.capacity
       }
       this.progress = this.rank === User.rank.max ? 0 : progress
-      console.log(`task: ${activityRank}, rank: ${this.rank}, weight: ${this._calcActivityWeight(activityRank)}, progress: ${this.progress}`)
     }
   }
 
