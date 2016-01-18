@@ -750,40 +750,78 @@ Ex: u = [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]
 
 1 gives 3 and 4, then 3 gives 7 and 10, 4 gives 9 and 13, then 7 gives 15 and 22 and so on...
 
-Task:
+*/
 
-Given parameter n the function dbl_linear (or dblLinear...) returns the element u(n) of the ordered (with <=) sequence u.
+/*2 pointers decision (by Andrew tip)
+
+Algo: 
+  pointer points to seq item
+  generate number by each pointer
+  
+  increase pointer if generated value is lowest 
+    to keep seq ordered
+
+
 
 */
 
 function task508() {
+
   function dblLinear(n) {
-    var seq = [1];
-
-    var takeRight = function takeRight(arr, n) {
-      return Array.apply(null, Array(n)).map(function (_, idx) {
-        return arr[arr.length - 1 - idx];
-      });
+    var p1 = 0,
+        p2 = 0,
+        seq = [1],
+        genX = function genX(i) {
+      return 2 * i + 1;
+    },
+        genY = function genY(i) {
+      return 3 * i + 1;
     };
 
-    var genSeq = function genSeq(items) {
-      if (seq.length >= n) return;
-      items.forEach(function (i) {
-        seq.push(2 * i + 1, 3 * i + 1);
-      });
-      genSeq(_.takeRight(seq, 2));
-    };
-    genSeq(_.takeRight(seq, 1));
-    seq.sort(function (a, b) {
-      return a - b;
-    });
+    for (var i = 0; i < n; i++) {
+      var v1 = genX(seq[p1]),
+          v2 = genY(seq[p2]);
+
+      if (v1 < v2) {
+        seq.push(v1);
+        p1++;
+      } else if (v2 < v1) {
+        seq.push(v2);
+        p2++;
+      } else {
+        p1++;
+        i--;
+      }
+    }
     return seq[n];
   }
-  console.log(dblLinear(10));
-  console.log(dblLinear(20));
-  console.log(dblLinear(30));
+
+  console.log(dblLinear(50));
+  console.log(dblLinear(100));
 }
 task508();
+
+/*Slow decision: 
+  problem: sort all array after each char generation
+
+  function dblLinear (n) {
+    let seq = [1]
+    let genSubSeq = (i) => {
+      seq.push(2*seq[i]+1, 3*seq[i]+ 1)
+    }
+    let validateSubSeq = () => {
+      seq = _(seq).sort((a,b) => a - b)
+                  .uniq(true)
+                  .value()
+    }
+    for (let i = 0; i < n; i++) {
+      if (seq.length >= 2*n) break
+      genSubSeq(i)
+      validateSubSeq()
+    };
+    return seq[n]
+  }
+*/
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {
