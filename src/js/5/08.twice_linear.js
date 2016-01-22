@@ -59,7 +59,7 @@ function task508 () {
   console.log(dblLinear(100))
 
 }
-task508()
+// task508()
 
 
 /*Slow decision: 

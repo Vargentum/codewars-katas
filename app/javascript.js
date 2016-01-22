@@ -340,7 +340,64 @@ function task405() {
     After applying rank of 8 the progress was expected to be 91, but was actually 0
   */
 }
-task405();
+// task405()
+'use strict';
+
+/*
+
+Create a basic UriBuilder object that will be used specifically to build query params on an existing URI. 
+
+  - It should support a params property and a build method. 
+  - It will handle the URL having pre-existing params that need to be managed. 
+  - The URL must be properly encoded (i.e. "a b" should be encoded as "a%20b")
+
+
+  Highlight: use `thru` to acheive `tap` functionality with primitives
+
+*/
+
+function task406() {
+
+  var UriBuilder = function UriBuilder(uri) {
+    var validUri = uri.replace(/\s/, '%20');
+
+    return {
+      params: {},
+      build: function build() {
+        var _this = this;
+
+        return _.chain(validUri).thru(function (uri) {
+          _.forIn(_this.params, function (v, k) {
+            return uri += '?' + k + '=' + v;
+          });
+          return uri;
+        }).value();
+      }
+    };
+  };
+
+  var builder = UriBuilder('http://www.code wars.com');
+
+  builder.params.a = 1;
+  console.log(builder.build());
+
+  builder.params.a = 2;
+  console.log(builder.build());
+
+  builder.params.b = 2;
+  console.log(builder.build());
+
+  delete builder.params.b;
+  console.log(builder.build());
+
+  /*Tests*/
+  // Test.assertEquals(builder.build(), 'http://www.code%20wars.com?page=1')
+
+  // Test.expect(boolean, [optional] message)
+  //  Test.assertSimilar(actual, expected, [optional] message)
+  //  Test.assertNotEquals(actual, expected, [optional] message)
+}
+task406();
 'use strict';
 
 /*
@@ -799,7 +856,7 @@ function task508() {
   console.log(dblLinear(50));
   console.log(dblLinear(100));
 }
-task508();
+// task508()
 
 /*Slow decision: 
   problem: sort all array after each char generation
