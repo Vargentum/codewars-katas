@@ -397,7 +397,7 @@ function task406() {
   //  Test.assertSimilar(actual, expected, [optional] message)
   //  Test.assertNotEquals(actual, expected, [optional] message)
 }
-task406();
+// task406()
 'use strict';
 
 /*
@@ -879,6 +879,69 @@ function task508() {
     return seq[n]
   }
 */
+'use strict';
+
+/*
+
+
+Sometimes we need to use multiDIMensional arrays (array of arrays).
+The goal of this kata is to code a dim function which will create an xD-array and fill it with a default value.
+
+You may assume:
+
+  at least 2 arguments (d1and value) are provided
+  each d argument will be a positive integer
+  value argument may be a number, a string, a boolean, ...
+
+
+dim( 2,2,2 "x" ) // => [[['x','x'], ['x','x']],[['x','x'], ['x','x']],[['x','x'], ['x','x']]]
+
+['x', 'x']
+[['x', 'x'], ['x', 'x']]
+[ [['x','x'], ['x','x']], [['x','x'], ['x','x']] ]
+
+Algo:
+  make arrayMaker (n)
+  construct XD array
+
+
+Enligntment: 
+  
+  - lodash `clone` clones 
+ 
+*/
+
+function task509() {
+
+  var dim = function dim() {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    var char = _.last(args),
+        nums = _.initial(args),
+        makeArrayFrom = function makeArrayFrom(smt, n) {
+      return _.times(n, function () {
+        var exec = _.isFunction(smt) ? smt() : smt;
+        return _.clone(exec, true);
+      });
+    };
+
+    return nums.reverse().reduce(function (result, num) {
+      return makeArrayFrom(result || char, num);
+    }, null);
+  };
+
+  var test = function test() {
+    return 'xX';
+  };
+
+  var d2 = dim(5, 5, _.partial(_.random, 10));
+  console.log(d2.toString());
+
+  var a = _.clone('a');
+}
+task509();
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {
