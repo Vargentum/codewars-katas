@@ -24,7 +24,8 @@ Algo:
 
 Enligntment: 
   
-  - lodash `clone` clones 
+  - if task is breakable into smaller similar tasks - reqursion !!!!
+  
  
 */
 
@@ -34,24 +35,37 @@ function task509 () {
   const dim = function(...args) {
     let char = _.last(args)
        ,nums = _.initial(args)
-       ,makeArrayFrom = (smt, n) => _.times(n, () => {
-         let exec = _.isFunction(smt) ? smt() : smt
-         return _.clone(exec, true)
-       });
+       ,genChars = (n, c) => _.times(n, () => _.isFunction(c) ? c() : c)
+       ,genArray = (expr, n, isLast) => {
+          return _.isArray(expr) 
+                    ? expr.map(sub => genArray(sub, n, isLast)) 
+                    : genChars(n, isLast ? char : null)
+        }
 
-    return nums.reverse().reduce((result, num) => {
-      return makeArrayFrom(result || char, num)
+    return nums.reduce((result, num, i) => {
+      let isLast = i === nums.length - 1
+      return genArray(result, num, isLast)
     }, null)
   }
 
-  let test = () => 'xX'
 
-  let d2 = dim(5,5, _.partial(_.random, 10));
-  console.log(d2.toString())
+  // let d1 = dim(2,2,2, '5');
+  // d1[0][0][0] = '6'
+  // console.log(d1.toString())
 
-  let a = _.clone('a')
+  // let d2 = dim(2,2,2, _.partial(_.random, 10));
+  // console.log(d2)
+  // console.log(d2.toString())
+
+  // let counter = function(n) {
+  //   return () => {
+  //     console.log(n)
+  //     return n++
+  //   }
+  // }
+
+  // let d3 = dim(5,5,5, counter(0))
+  // console.log(d3)
+  // console.log(d3.toString())
 }
 task509()
-
-
-

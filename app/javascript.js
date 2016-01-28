@@ -879,7 +879,7 @@ function task508() {
     return seq[n]
   }
 */
-'use strict';
+"use strict";
 
 /*
 
@@ -907,7 +907,8 @@ Algo:
 
 Enligntment: 
   
-  - lodash `clone` clones 
+  - if task is breakable into smaller similar tasks - reqursion !!!!
+  
  
 */
 
@@ -920,28 +921,344 @@ function task509() {
 
     var char = _.last(args),
         nums = _.initial(args),
-        makeArrayFrom = function makeArrayFrom(smt, n) {
+        genChars = function genChars(n, c) {
       return _.times(n, function () {
-        var exec = _.isFunction(smt) ? smt() : smt;
-        return _.clone(exec, true);
+        return _.isFunction(c) ? c() : c;
       });
+    },
+        genArray = function genArray(expr, n, isLast) {
+      return _.isArray(expr) ? expr.map(function (sub) {
+        return genArray(sub, n, isLast);
+      }) : genChars(n, isLast ? char : null);
     };
 
-    return nums.reverse().reduce(function (result, num) {
-      return makeArrayFrom(result || char, num);
+    return nums.reduce(function (result, num, i) {
+      var isLast = i === nums.length - 1;
+      return genArray(result, num, isLast);
     }, null);
   };
 
-  var test = function test() {
-    return 'xX';
-  };
+  // let d1 = dim(2,2,2, '5');
+  // d1[0][0][0] = '6'
+  // console.log(d1.toString())
 
-  var d2 = dim(5, 5, _.partial(_.random, 10));
-  console.log(d2.toString());
+  // let d2 = dim(2,2,2, _.partial(_.random, 10));
+  // console.log(d2)
+  // console.log(d2.toString())
 
-  var a = _.clone('a');
+  // let counter = function(n) {
+  //   return () => {
+  //     console.log(n)
+  //     return n++
+  //   }
+  // }
+
+  // let d3 = dim(5,5,5, counter(0))
+  // console.log(d3)
+  // console.log(d3.toString())
 }
 task509();
+"use strict";
+
+/*My desicion*/
+
+Array.prototype.all = function (predicate) {
+  for (var i = 0; i < this.length; i++) {
+    if (!predicate(this[i])) {
+      return false;
+    }
+  }
+  return true;
+};
+
+Array.prototype.none = function (predicate) {
+  for (var i = 0; i < this.length; i++) {
+    if (predicate(this[i])) {
+      return false;
+    }
+  }
+  return true;
+};
+
+Array.prototype.any = function (predicate) {
+  for (var i = 0; i < this.length; i++) {
+    if (predicate(this[i])) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/*Best practices: use filter*/
+"use strict";
+"use strict";
+
+/*Description:
+
+Write a function, factory, that takes a number as its parameter and returns another function.
+
+The returned function should take an array of numbers as its parameter, and return an array of those numbers multiplied by the number that was passed into the first function.
+
+In the example below, 5 is the number passed into the first function. So it returns a function that takes an array and multiplies all elements in it by five.
+
+Translations and comments (and upvotes) welcome!*/
+
+function factory(x) {
+  function multiply(array) {
+    return array.map(function (i) {
+      return i * x;
+    });
+  }
+  return multiply;
+}
+
+var fives = factory(5);
+var myArray = [1, 2, 3];
+fives(myArray); //[5, 10, 15]
+"use strict";
+
+/*
+The challenge is to write the function isAnagram 
+to return True if the word test is an anagram 
+of the word original and False if not.
+
+Algo:
+  - reduce test to letters objectA
+  - reduce original to objectB
+  - compare each objects
+
+  addition:
+  - toLowerCase
+  - keep only letters: remove whitespaces, punctuation marks, numbers.
+
+  - make extended exsistence check ()
+*/
+
+function isAnagram(test, orig) {
+
+  function reduceToLetters(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]*/g, "").split("").reduce(function (acc, l) {
+      // !acc[l] ? acc[l] = 1 : acc[l] += 1  cause to warning
+      return acc;
+    }, {});
+  }
+
+  var testLetters = reduceToLetters(test);
+  var origLetters = reduceToLetters(orig);
+
+  if (Object.keys(testLetters).length !== Object.keys(origLetters).length) {
+    return false;
+  }
+
+  for (var key in origLetters) {
+    if (origLetters[key] !== testLetters[key]) {
+      return false;
+    }
+  }
+  return true;
+}
+// console.log(isAnagram("William Shakespeare","I am a weakish speller"));
+// console.log(isAnagram('{;eo]ls ', '{;e!]ls '));
+
+/*
+  Expirience:
+    - sort string with Array.prototype.sort() method
+    - compare two sorted strings
+  minor
+    - replace [a-zA-Z0-9] width \w
+*/
+function isAnagramBetter(test, orig) {
+
+  function normalize(str) {
+    return str.replace(/[^\w]*/g, "").toLowerCase().split("").sort().join("");
+  }
+  return normalize(test) === normalize(orig);
+}
+
+// console.log(isAnagramBetter("William Shakespeare","I am a weakish speller"));
+// console.log(isAnagramBetter('{;eo]ls ', '{;e!]ls '));
+"use strict";
+
+/*
+In Russia, there is an army-purposed station named UVB-76 or "Buzzer" 
+Transmitted messages have always the same format like this:
+
+MDZHB 01 213 SKIF 38 87 23 95
+or:
+MDZHB 80 516 GANOMATIT 21 23 86 25
+
+Message format consists of following parts:
+
+Initial keyword "MDZHB";
+Two groups of digits, 2 digits in first and 3 in second ones;
+Some keyword of arbitrary length consisting only of uppercase letters;
+Final 4 groups of digits with 2 digits in each group.
+*/
+
+function validate(message) {
+  var validator = /\bMDZHB\s\d{2}\s\d{3}\s[A-Z]+(\s\d{2}){4}\b/;
+  return validator.test(message);
+}
+
+// console.log(validate("Is this a right message?"))
+// console.log(validate("MDZHB 85 596 KLASA 81 00 02 91"))
+// console.log(validate("MDZHB 12 733 EDINENIE 67 79 66 32"))
+// console.log(validate("MDZHV 60 130 VATRUKH 58 89 54 54"))
+
+/*Tips:
+  use /^pattern$/ - to search from start (^) to end ($) of the string.
+  maybe use " " spaces instead of \s ?
+*/
+'use strict';
+
+/*
+This time no story, no theory. The examples below show you how to write function accum:
+
+Examples:
+
+accum("abcd") --> "A-Bb-Ccc-Dddd"
+accum("RqaEzty") --> "R-Qq-Aaa-Eeee-Zzzzz-Tttttt-Yyyyyyy"
+accum("cwAt") --> "C-Ww-Aaa-Tttt"
+*/
+
+var accum = function accum(str) {
+  return str.split('').map(function (c, i) {
+    return c.toUpperCase() + _.repeat(c.toLowerCase(), i);
+  }).join('-');
+};
+// console.log(accum('aBcD'))
+
+var accum1 = function accum1(str) {
+  return str.split('').map(function (char, i) {
+    var res = char.toUpperCase();
+    while (i > 0) {
+      res += char.toLowerCase();
+      i--;
+    }
+    return res;
+  }).join('-');
+};
+// console.log(accum1('aBcD'))
+
+/*
+Tip: use Array(n+1).join(char) to create string repeating char n-times! 
+
+*/
+'use strict';
+
+String.prototype.capitalize = function () {
+   return this.trim().split(' ').map(function (word) {
+      return word.replace(/^[a-z]/g, word.charAt(0).toUpperCase());
+   }).join(' ');
+};
+
+// console.log('test som, string. ect ast arrow!'.capitalize())
+"use strict";
+
+function XO(str) {
+  function convertToInt(arr) {
+    return arr === null ? 0 : arr.length;
+  }
+  var x = str.match(/[xX]*/g);
+  var o = str.match(/[oO]*/g);
+
+  return convertToInt(x) === convertToInt(o) ? true : false;
+}
+"use strict";
+
+function getCharacters(obj, key, val) {
+  return obj.characters.filter(function (item) {
+    return item[key] && item[key].toLowerCase() === val.toLowerCase();
+  });
+}
+
+/*TODO: 
+get object, which key equals some val (provided), else return []*/
+
+var characters = { "characters": [{ "name": "Bill Cipher", "age": "Unknown", "speciality": "warp reality" }] };
+'use strict';
+
+function removeRotten(bagOfFruits) {
+  if (bagOfFruits && bagOfFruits.length) {
+    return bagOfFruits.map(function (f) {
+      return f.toLowerCase().replace('rotten', '');
+    });
+  } else {
+    return [];
+  }
+}
+'use strict';
+
+function toCurrency(price) {
+  var rawPrice = price.toString().split('').reverse().map(function (x, i) {
+    return (i + 1) % 3 === 0 ? ',' + x : x;
+  }).reverse().join('');
+  return rawPrice[0] === ',' ? rawPrice.slice(1) : rawPrice;
+}
+"use strict";
+
+/* convert list like structure (deep object) to array
+Desicion process:
+use recursion
+inner function need to avoid result overriding
+ */
+
+function listToArray(list) {
+  var result = [];
+
+  var flatten = function flatten(lst) {
+    if (lst.next) {
+      flatten(lst.next);
+    }
+    result.push(lst.value);
+  };
+
+  flatten(list);
+  return result.reverse();
+}
+
+var list1 = { value: 1, next: { value: 2, next: { value: 3, next: null } } };
+
+// console.log(listToArray(list1));
+"use strict";
+
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
+
+//remember that filter returns an array. Not an object!
+//can chain array's element call directly to filter
+
+function findEmployeesRole(name) {
+  var _name$split = name.split(' ');
+
+  var _name$split2 = _slicedToArray(_name$split, 2);
+
+  providedFirstName = _name$split2[0];
+  providedLastName = _name$split2[1];
+
+  var employee = employees.filter(function (e) {
+    return e.firstName === providedFirstName && e.lastName === providedLastName;
+  })[0];
+  return employee ? employee.role : "Does not work here!";
+}
+"use strict";
+
+/*Create remove_(someIntList, integersToRemove) function with 2 parameters
+someIntList - array of integers
+integersToRemove - all integers from it's array will be removed from someIntList
+*/
+
+Array.prototype.remove_ = function (integer_list, value_list) {
+  return integer_list.filter(function (i) {
+    return !value_list.some(function (v) {
+      return v === i;
+    });
+  });
+};
+
+var l = [];
+var integer_list = [1, 1, 2, 3, 1, 2, 3, 4];
+var values_list = [1, 3];
+// console.log(l.remove_(integer_list, values_list))
 'use strict';
 
 var uniqueInOrder = function uniqueInOrder(data) {
@@ -1705,304 +2022,3 @@ function groupAnagrams(words) {
 
 // console.log(groupAnagrams(["rat", "tar", "star"]))
 // console.log(groupAnagrams(["tsar", "rat", "tar", "star", "tars", "cheese"]))
-"use strict";
-
-/*My desicion*/
-
-Array.prototype.all = function (predicate) {
-  for (var i = 0; i < this.length; i++) {
-    if (!predicate(this[i])) {
-      return false;
-    }
-  }
-  return true;
-};
-
-Array.prototype.none = function (predicate) {
-  for (var i = 0; i < this.length; i++) {
-    if (predicate(this[i])) {
-      return false;
-    }
-  }
-  return true;
-};
-
-Array.prototype.any = function (predicate) {
-  for (var i = 0; i < this.length; i++) {
-    if (predicate(this[i])) {
-      return true;
-    }
-  }
-  return false;
-};
-
-/*Best practices: use filter*/
-"use strict";
-"use strict";
-
-/*Description:
-
-Write a function, factory, that takes a number as its parameter and returns another function.
-
-The returned function should take an array of numbers as its parameter, and return an array of those numbers multiplied by the number that was passed into the first function.
-
-In the example below, 5 is the number passed into the first function. So it returns a function that takes an array and multiplies all elements in it by five.
-
-Translations and comments (and upvotes) welcome!*/
-
-function factory(x) {
-  function multiply(array) {
-    return array.map(function (i) {
-      return i * x;
-    });
-  }
-  return multiply;
-}
-
-var fives = factory(5);
-var myArray = [1, 2, 3];
-fives(myArray); //[5, 10, 15]
-"use strict";
-
-/*
-The challenge is to write the function isAnagram 
-to return True if the word test is an anagram 
-of the word original and False if not.
-
-Algo:
-  - reduce test to letters objectA
-  - reduce original to objectB
-  - compare each objects
-
-  addition:
-  - toLowerCase
-  - keep only letters: remove whitespaces, punctuation marks, numbers.
-
-  - make extended exsistence check ()
-*/
-
-function isAnagram(test, orig) {
-
-  function reduceToLetters(str) {
-    return str.toLowerCase().replace(/[^a-z0-9]*/g, "").split("").reduce(function (acc, l) {
-      // !acc[l] ? acc[l] = 1 : acc[l] += 1  cause to warning
-      return acc;
-    }, {});
-  }
-
-  var testLetters = reduceToLetters(test);
-  var origLetters = reduceToLetters(orig);
-
-  if (Object.keys(testLetters).length !== Object.keys(origLetters).length) {
-    return false;
-  }
-
-  for (var key in origLetters) {
-    if (origLetters[key] !== testLetters[key]) {
-      return false;
-    }
-  }
-  return true;
-}
-// console.log(isAnagram("William Shakespeare","I am a weakish speller"));
-// console.log(isAnagram('{;eo]ls ', '{;e!]ls '));
-
-/*
-  Expirience:
-    - sort string with Array.prototype.sort() method
-    - compare two sorted strings
-  minor
-    - replace [a-zA-Z0-9] width \w
-*/
-function isAnagramBetter(test, orig) {
-
-  function normalize(str) {
-    return str.replace(/[^\w]*/g, "").toLowerCase().split("").sort().join("");
-  }
-  return normalize(test) === normalize(orig);
-}
-
-// console.log(isAnagramBetter("William Shakespeare","I am a weakish speller"));
-// console.log(isAnagramBetter('{;eo]ls ', '{;e!]ls '));
-"use strict";
-
-/*
-In Russia, there is an army-purposed station named UVB-76 or "Buzzer" 
-Transmitted messages have always the same format like this:
-
-MDZHB 01 213 SKIF 38 87 23 95
-or:
-MDZHB 80 516 GANOMATIT 21 23 86 25
-
-Message format consists of following parts:
-
-Initial keyword "MDZHB";
-Two groups of digits, 2 digits in first and 3 in second ones;
-Some keyword of arbitrary length consisting only of uppercase letters;
-Final 4 groups of digits with 2 digits in each group.
-*/
-
-function validate(message) {
-  var validator = /\bMDZHB\s\d{2}\s\d{3}\s[A-Z]+(\s\d{2}){4}\b/;
-  return validator.test(message);
-}
-
-// console.log(validate("Is this a right message?"))
-// console.log(validate("MDZHB 85 596 KLASA 81 00 02 91"))
-// console.log(validate("MDZHB 12 733 EDINENIE 67 79 66 32"))
-// console.log(validate("MDZHV 60 130 VATRUKH 58 89 54 54"))
-
-/*Tips:
-  use /^pattern$/ - to search from start (^) to end ($) of the string.
-  maybe use " " spaces instead of \s ?
-*/
-'use strict';
-
-/*
-This time no story, no theory. The examples below show you how to write function accum:
-
-Examples:
-
-accum("abcd") --> "A-Bb-Ccc-Dddd"
-accum("RqaEzty") --> "R-Qq-Aaa-Eeee-Zzzzz-Tttttt-Yyyyyyy"
-accum("cwAt") --> "C-Ww-Aaa-Tttt"
-*/
-
-var accum = function accum(str) {
-  return str.split('').map(function (c, i) {
-    return c.toUpperCase() + _.repeat(c.toLowerCase(), i);
-  }).join('-');
-};
-// console.log(accum('aBcD'))
-
-var accum1 = function accum1(str) {
-  return str.split('').map(function (char, i) {
-    var res = char.toUpperCase();
-    while (i > 0) {
-      res += char.toLowerCase();
-      i--;
-    }
-    return res;
-  }).join('-');
-};
-// console.log(accum1('aBcD'))
-
-/*
-Tip: use Array(n+1).join(char) to create string repeating char n-times! 
-
-*/
-'use strict';
-
-String.prototype.capitalize = function () {
-   return this.trim().split(' ').map(function (word) {
-      return word.replace(/^[a-z]/g, word.charAt(0).toUpperCase());
-   }).join(' ');
-};
-
-// console.log('test som, string. ect ast arrow!'.capitalize())
-"use strict";
-
-function XO(str) {
-  function convertToInt(arr) {
-    return arr === null ? 0 : arr.length;
-  }
-  var x = str.match(/[xX]*/g);
-  var o = str.match(/[oO]*/g);
-
-  return convertToInt(x) === convertToInt(o) ? true : false;
-}
-"use strict";
-
-function getCharacters(obj, key, val) {
-  return obj.characters.filter(function (item) {
-    return item[key] && item[key].toLowerCase() === val.toLowerCase();
-  });
-}
-
-/*TODO: 
-get object, which key equals some val (provided), else return []*/
-
-var characters = { "characters": [{ "name": "Bill Cipher", "age": "Unknown", "speciality": "warp reality" }] };
-'use strict';
-
-function removeRotten(bagOfFruits) {
-  if (bagOfFruits && bagOfFruits.length) {
-    return bagOfFruits.map(function (f) {
-      return f.toLowerCase().replace('rotten', '');
-    });
-  } else {
-    return [];
-  }
-}
-'use strict';
-
-function toCurrency(price) {
-  var rawPrice = price.toString().split('').reverse().map(function (x, i) {
-    return (i + 1) % 3 === 0 ? ',' + x : x;
-  }).reverse().join('');
-  return rawPrice[0] === ',' ? rawPrice.slice(1) : rawPrice;
-}
-"use strict";
-
-/* convert list like structure (deep object) to array
-Desicion process:
-use recursion
-inner function need to avoid result overriding
- */
-
-function listToArray(list) {
-  var result = [];
-
-  var flatten = function flatten(lst) {
-    if (lst.next) {
-      flatten(lst.next);
-    }
-    result.push(lst.value);
-  };
-
-  flatten(list);
-  return result.reverse();
-}
-
-var list1 = { value: 1, next: { value: 2, next: { value: 3, next: null } } };
-
-// console.log(listToArray(list1));
-"use strict";
-
-var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
-
-//remember that filter returns an array. Not an object!
-//can chain array's element call directly to filter
-
-function findEmployeesRole(name) {
-  var _name$split = name.split(' ');
-
-  var _name$split2 = _slicedToArray(_name$split, 2);
-
-  providedFirstName = _name$split2[0];
-  providedLastName = _name$split2[1];
-
-  var employee = employees.filter(function (e) {
-    return e.firstName === providedFirstName && e.lastName === providedLastName;
-  })[0];
-  return employee ? employee.role : "Does not work here!";
-}
-"use strict";
-
-/*Create remove_(someIntList, integersToRemove) function with 2 parameters
-someIntList - array of integers
-integersToRemove - all integers from it's array will be removed from someIntList
-*/
-
-Array.prototype.remove_ = function (integer_list, value_list) {
-  return integer_list.filter(function (i) {
-    return !value_list.some(function (v) {
-      return v === i;
-    });
-  });
-};
-
-var l = [];
-var integer_list = [1, 1, 2, 3, 1, 2, 3, 4];
-var values_list = [1, 3];
-// console.log(l.remove_(integer_list, values_list))
